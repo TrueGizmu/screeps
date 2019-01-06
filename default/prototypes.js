@@ -51,17 +51,17 @@ if (!StructureSpawn.prototype._spawnCreep) {
         console.log('opts', JSON.stringify(opts));
         console.log('name',JSON.stringify(name));
         
-        if (!Memory.myCreepNameCounter) Memory.myCreepNameCounter = 0;
+        if (!Memory.myCreepNameCounter) Memory.myCreepNameCounter = 0; 
         // handling case when name is null, but opts are not
         if(!opts && _.isObject(name)) {
             opts = name;
             name = undefined;
         }
 
-        const harvesterNames = ['RyjjjÄ‡', 'Ryjek', 'Slave', 'ParÃ³fÄ‡', 'GrzybÄ‡', 'ParÃ³wa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
+        const harvesterNames = ['Ryjjjæ', 'Ryjek', 'Slave', 'Parófæ', 'Grzybæ', 'Parówa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
         const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy'];
         const upgraderNames = ['TVM0013', 'TVM0050', 'TVM0001', 'TVM0120', 'TVM0002', 'TVM0051', 'TVM0036'];
-        const minerNames = ['RyjÃ³wka', 'Sznupka', 'Czarna', 'Kopacz', 'WiertaÅ‚ka', 'Koper'];
+        const minerNames = ['Ryjówka', 'Sznupka', 'Czarna', 'Kopacz', 'Wierta³ka', 'Koper'];
         const zergNames = ['ZergQueen', 'ZergPrincess', 'Zergling'];
 
         let newName = name;
