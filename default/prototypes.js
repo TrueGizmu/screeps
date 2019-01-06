@@ -56,7 +56,7 @@ if (!StructureSpawn.prototype._spawnCreep) {
         if(!opts && _.isObject(name)) {
             opts = name;
             name = undefined;
-        }
+        } 
 
         const harvesterNames = ['Ryjjjcio', 'Ryjek', 'Slave', 'Parofcia', 'Grzybcio', 'Paruwa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
         const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy'];
