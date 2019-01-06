@@ -7,7 +7,7 @@
  * mod.thing == 'a thing'; // true
  */
 
-module.exports = {
+module.exports = { 
     clearMemory() {
         for(var name in Memory.creeps) {
             if (!Game.creeps[name]) {
