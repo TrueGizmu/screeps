@@ -21,10 +21,12 @@ module.exports = {
         if (!position) {
             position = creep.pos;
         }
+
+        var energyNeeded = creep.carryCapacity - _.sum(creep.carry);
         
-        var containers = _.filter(creep.room.getContainers(), c => c.store[RESOURCE_ENERGY] >= creep.carryCapacity);
+        var containers = _.filter(creep.room.getContainers(), c => c.store[RESOURCE_ENERGY] >= energyNeeded);
         if (creep.memory.role == 'upgrader') {
-            var outLinks = _.filter(creep.room.getLinks('OUT'), l => l.energy >= creep.carryCapacity);
+            var outLinks = _.filter(creep.room.getLinks('OUT'), l => l.energy >= energyNeeded);
             containers = containers.concat(outLinks);
         }
 
@@ -34,7 +36,7 @@ module.exports = {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
 	    }
-	    else if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {
+	    else if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= energyNeeded) {
 	        var source = creep.room.storage;
 	        if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
