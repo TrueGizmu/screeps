@@ -58,10 +58,10 @@ if (!StructureSpawn.prototype._spawnCreep) {
             name = undefined;
         }
 
-        const harvesterNames = ['Ryjjjć', 'Ryjek', 'Slave', 'Parófć', 'Grzybć', 'Parówa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
+        const harvesterNames = ['Ryjjjcio', 'Ryjek', 'Slave', 'Parofcia', 'Grzybcio', 'Paruwa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
         const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy'];
         const upgraderNames = ['TVM0013', 'TVM0050', 'TVM0001', 'TVM0120', 'TVM0002', 'TVM0051', 'TVM0036'];
-        const minerNames = ['Ryjówka', 'Sznupka', 'Czarna', 'Kopacz', 'Wiertałka', 'Koper'];
+        const minerNames = ['Ryjowka', 'Sznupka', 'Czarna', 'Kopacz', 'Wiertauka', 'Koper'];
         const zergNames = ['ZergQueen', 'ZergPrincess', 'Zergling'];
 
         let newName = name;
