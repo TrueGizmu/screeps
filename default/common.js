@@ -45,11 +45,16 @@ module.exports = {
     storeEnergy(creep) {
       var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
               filter: (structure) => {
-                  return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || 
-                          structure.structureType == STRUCTURE_TOWER) &&
+                  return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
                       structure.energy < structure.energyCapacity && creep.memory.roomName == structure.room.name;
               }
       });
+
+      if (!target) {
+          var towers = creep.room.getTowers();
+          target = creep.pos.findClosestByRange(_.filter(towers, t => t.energy < (tower.energyCapacity/2)));
+      }
+
       if(!target) {
           target = creep.pos.findClosestByRange(_.filter(creep.room.getLinks('IN'), l => l.energy != l.energyCapacity));
       }
