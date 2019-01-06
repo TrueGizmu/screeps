@@ -73,7 +73,6 @@ module.exports = {
         if (creep.room.storage && _.sum(creep.room.storage.store) != creep.room.storage.storeCapacity) {
             target = creep.room.storage;
             for(var item in creep.carry) {
-                console.log(item);
                 if(creep.transfer(target, item) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }

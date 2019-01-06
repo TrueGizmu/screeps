@@ -14,11 +14,11 @@ module.exports = {
     run: function(creep) {
         if(creep.memory.loading && _.sum(creep.carry) == 0) {
             creep.memory.loading = false;
-            creep.say('⛏ kop kop');
+            creep.say('kop kop');
 	    }
 	    if(!creep.memory.loading && _.sum(creep.carry) == creep.carryCapacity) {
 	        creep.memory.loading = true;
-	        creep.say('⚡ zaap');
+	        creep.say('zaap');
 	    }
         
 	    if(!creep.memory.loading) {
@@ -36,10 +36,28 @@ module.exports = {
                         creep.withdraw(tombstone, prop);
                     }
                 }
+                return;
             }
-            else {
-                common.gather(creep);
+            
+            var container = _.find(creep.room.memory.containers, c => c.readyToTransfer);
+            if (container) {
+                container = Game.getObjectById(container.id);
+                if (!container.isEmpty) {
+                    if (!creep.pos.isNearTo(container)) {
+                        // try to reach tombstone
+                        creep.moveTo(container);
+                    }
+                    else {
+                        // withdraw all resource types
+                        for (var prop in container.store) {
+                            creep.withdraw(container, prop);
+                        }
+                    }
+                    return;
+                }
             }
+            
+            common.gather(creep);
         }
         else {
             if (_.sum(creep.carry) > creep.carry.energy) {

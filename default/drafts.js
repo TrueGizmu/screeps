@@ -37,11 +37,11 @@ Game.creeps.Legolas.moveTo(Game.flags.Flag1);
                     
                     if(creep.memory.building && creep.carry.energy == 0) {
                         creep.memory.building = false;
-                        creep.say('⛏ kop kop');
+                        creep.say('â kop kop');
             	    }
             	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
             	        creep.memory.building = true;
-            	        creep.say('🚧 build');
+            	        creep.say('ð§ build');
             	    }
                     
                     if (!creep.memory.building) {

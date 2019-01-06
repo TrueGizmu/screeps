@@ -24,7 +24,7 @@ module.exports = {
             
             if (tower.energy > 200) {
                 var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: structure => structure.hits < structure.hitsMax && structure.type != STRUCTURE_WALL
+                    filter: structure => structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL
                 });
                 if (closestDamagedStructure) {
                     tower.repair(closestDamagedStructure);

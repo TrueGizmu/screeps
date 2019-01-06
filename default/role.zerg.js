@@ -14,15 +14,16 @@ module.exports = {
             
             if(!creep.memory.mining && creep.carry.energy == 0) {
                 creep.memory.mining = true;
-                creep.say('⛏ kop kop');
+                creep.say('kop kop');
             }
             if(creep.memory.mining && creep.carry.energy == creep.carryCapacity) {
                 creep.memory.mining = false;
-                creep.say('🚧 work work');
+                creep.say('work work');
             }
             
             if (creep.memory.mining) {
-                var source = Game.getObjectById('5bbcaf829099fc012e63ab01'); //creep.pos.findClosestByRange(FIND_SOURCES,{ filter: (str) => {return str.energy >= creep.carryCapacity;}});
+                //var source = Game.getObjectById('5bbcaf829099fc012e63ab01');
+                var source = creep.pos.findClosestByPath(FIND_SOURCES,{ filter: (str) => {return str.energy >= creep.carryCapacity;}});
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }

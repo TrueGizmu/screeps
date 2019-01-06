@@ -15,11 +15,11 @@ module.exports = {
 
         if(creep.memory.upgrading && creep.carry.energy == 0) {
             creep.memory.upgrading = false;
-            creep.say('⛏ kop kop');
+            creep.say('kop kop');
 	    }
 	    if(!creep.memory.upgrading && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.upgrading = true;
-	        creep.say('⚡ ziuum');
+	        creep.say('ziuum');
 	    }
 
 	    if(creep.memory.upgrading) {

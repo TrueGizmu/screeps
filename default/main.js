@@ -3,6 +3,8 @@ var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleMiner = require('role.miner');
 var roleZerg = require("role.zerg");
+var roleClicker = require("role.clicker");
+
 
 var spawnController = require('spawning');
 var defences = require('defences');
@@ -47,6 +49,9 @@ module.exports.loop = function () {
     
     for(var name in Game.creeps) {
             var creep = Game.creeps[name];
+            if (creep.spawning) {
+                continue;
+            }
             if(creep.memory.role == 'harvester') {
                 roleHarvester.run(creep);
             }
@@ -61,6 +66,9 @@ module.exports.loop = function () {
             }
             if(creep.memory.role == 'zerg') {
                 roleZerg.run(creep);
+            }
+            if(creep.memory.role == 'clicker') {
+                roleClicker.run(creep);
             }
         }
 }

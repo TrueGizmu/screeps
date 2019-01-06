@@ -15,11 +15,11 @@ module.exports = {
 
 	    if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;
-            creep.say('⛏ kop kop');
+            creep.say('kop kop');
 	    }
 	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.building = true;
-	        creep.say('🚧 build');
+	        creep.say('build');
 	    }
 
 	    if(creep.memory.building) {
@@ -39,7 +39,7 @@ module.exports = {
 	    }
 	    
 	    if (creep.ticksToLive <= 50) {
-	        creep.say('😵');
+	        creep.say('Im gonna die');
 	    }
 	}
 };
