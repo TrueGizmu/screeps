@@ -50,7 +50,12 @@ module.exports = {
                 return;
             }
 
-            if (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3)) {
+            if (room.name == 'E43N29' && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
+                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'upgrader', roomName: room.name } });
+                return;
+            }
+
+            if (room.name != 'E43N29' && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
                 spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], { memory: { role: 'upgrader', roomName: room.name } });
                 return;
             }
