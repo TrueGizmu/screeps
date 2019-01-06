@@ -45,7 +45,7 @@ module.exports = {
                         container.memory.readyToTransfer = true;
                     }
                     
-                    if(containerStoreAmount == container.storeCapacity || source.ticksToRegeneration) {
+                    if(container.isFull || source.ticksToRegeneration) {
                         container.memory.isActive = false;
                         creep.memory.containerId = null;
                         creep.memory.sourceId = null;
