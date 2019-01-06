@@ -31,8 +31,13 @@ module.exports = {
             var container = Game.getObjectById(creep.memory.containerId);
             var source = Game.getObjectById(creep.memory.sourceId);
             if (!container.memory || container.memory.isActive) {
-                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                if (!creep.pos.isEqualTo(container)) {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
+                    return;
+                }
+                
+                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.say('Whaaattt??');
                 }
                 
                 if (container.memory && container.memory.type == LOOK_MINERALS) {
