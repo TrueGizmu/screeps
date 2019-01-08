@@ -26,6 +26,7 @@ module.exports.loop = function () {
     for (var roomName in Memory.rooms) {
         
         var currentRoom = Game.rooms[roomName];
+        if (!currentRoom) continue;
         
         if (Game.time%100 == 0) {
             try {
