@@ -67,15 +67,15 @@ module.exports = {
                 return;
             }
 
-            if (warFlag && (!warFlag.room || !warFlag.room.controller.my) && zergClaimer.length == 0) {
-                spawn.spawnCreep([CLAIM,MOVE, MOVE, MOVE], 'ZergClaimer', { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
-                return;
-            }
+            // if (warFlag && (!warFlag.room || !warFlag.room.controller.my) && zergClaimer.length == 0) {
+            //     spawn.spawnCreep([CLAIM,MOVE, MOVE, MOVE], 'ZergClaimer', { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
+            //     return;
+            // }
 
-            if (warFlag && (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 150)))) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
-                return;
-            }
+            // if (warFlag && (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 150)))) {
+            //     spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
+            //     return;
+            // }
 
             if (clickers.length < _.filter(Game.flags, f => f.color == COLOR_PURPLE).length) {
                 spawn.spawnCreep([CLAIM, MOVE], { memory: { role: 'clicker' } });
