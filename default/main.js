@@ -64,9 +64,9 @@ module.exports.loop = function () {
             if(creep.memory.role == 'miner') {
                 roleMiner.run(creep);
             }
-            // if(creep.memory.role == 'zerg') {
-            //     roleZerg.run(creep);
-            // }
+            if(creep.memory.role == 'zerg') {
+                roleZerg.run(creep);
+            }
             if(creep.memory.role == 'clicker') {
                 roleClicker.run(creep);
             }
