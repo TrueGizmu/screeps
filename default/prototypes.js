@@ -71,7 +71,7 @@ if (!StructureSpawn.prototype._spawnCreep) {
         if (!newName) {
 
             // Now we need to generate a name and make sure it hasn't been taken
-            do {
+            for (let i = 0; i < 5; i++) {
                 switch (roleName) {
                     case 'harvester':
                         newName = _.sample(harvesterNames);
@@ -92,8 +92,9 @@ if (!StructureSpawn.prototype._spawnCreep) {
                         newName = `Noname${Memory.myCreepNameCounter++}`;
                 }
                 console.log(`Trying new name ${newName}`);
-                canCreate = this._spawnCreep(body, newName, { dryRun: true });
-            } while (canCreate === ERR_NAME_EXISTS);
+                if (this._spawnCreep(body, newName, { dryRun: true }) == OK)
+                    break;
+            }
         }
 
         // Now we call the original function passing in our generated name and 
@@ -104,14 +105,14 @@ if (!StructureSpawn.prototype._spawnCreep) {
 };
  
 Room.prototype.mapTowers = function() {
+
+    if (!this.memory.towers) {
+        this.memory.towers = [];
+    }
     
     var roomTowers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_TOWER);
 
     if (!roomTowers) return;
-    
-    if (!this.memory.towers) {
-        this.memory.towers = [];
-    }
     
     for (var i in roomTowers) {
         var id = roomTowers[i].id;
@@ -124,14 +125,14 @@ Room.prototype.mapTowers = function() {
 };
 
 Room.prototype.mapSpawns = function() {
+
+    if (!this.memory.spawns) {
+        this.memory.spawns = [];
+    }
     
     var roomSpawns = this.find(FIND_MY_SPAWNS);
 
     if (!roomSpawns) return;
-    
-    if (!this.memory.spawns) {
-        this.memory.spawns = [];
-    }
     
     for (var i in roomSpawns) {
         var id = roomSpawns[i].id;
@@ -144,14 +145,13 @@ Room.prototype.mapSpawns = function() {
 };
 
 Room.prototype.mapContainers = function() {
+    if (!this.memory.containers) {
+        this.memory.containers = [];
+    }
     
     var roomContainers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
 
     if (!roomContainers) return;
-    
-    if (!this.memory.containers) {
-        this.memory.containers = [];
-    }
     
     for (var i in roomContainers) {
         var id = roomContainers[i].id;
@@ -180,14 +180,14 @@ Room.prototype.mapContainers = function() {
 };
 
 Room.prototype.mapLinks = function() {
+
+    if (!this.memory.links) {
+        this.memory.links = [];
+    }
     
     var roomLinks = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_LINK);
 
     if (!roomLinks) return;
-    
-    if (!this.memory.links) {
-        this.memory.links = [];
-    }
     
     for (var i in roomLinks) {
         var id = roomLinks[i].id;

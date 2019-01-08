@@ -20,13 +20,14 @@ module.exports = {
                 if (!creep.memory.signPostNames) {
                     var signPosts = _.filter(Game.flags, f => f.name.startsWith('SignPost'));
                     if (signPosts) {
-                        signPosts = _.sortBy(signPosts, 'name');
+                        signPosts = _.sortBy(signPosts, 'name').map(s => s.name);
                     }
                     signPosts.push('Warflag');
-                    creep.memory.signPostNames = signPosts.map(s => s.name);
+                    creep.memory.signPostNames = signPosts;
                 }
 
                 if (creep.room.name == creep.memory.roomName) {
+                    creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffaa00'}});
                     if (creep.getActiveBodyparts(CLAIM) > 0) {
                         _changeState(creep, 'claimController');
                     }
@@ -38,7 +39,7 @@ module.exports = {
 
                 var flag = Game.flags[creep.memory.signPostNames[0]];
 
-                creep.moveTo(flag);
+                creep.moveTo(flag, {visualizePathStyle: {stroke: '#ffaa00'}});
 
                 if (creep.pos.isEqualTo(flag)) {
                     creep.memory.signPostNames.shift();
@@ -76,7 +77,7 @@ module.exports = {
             case 'buildSpawnConstructionSite':
                 var warFlag = Game.flags['Warflag'];
                 creep.room.createConstructionSite(warFlag.pos, STRUCTURE_SPAWN, warFlag.memory.spawnName);
-                _changeState(creep, 'build');
+                _changeState(creep, 'work');
                 break;
             case 'work':
                 if(!creep.memory.mining && creep.carry.energy == 0) {
@@ -114,6 +115,7 @@ module.exports = {
                 }
                 break;
             default:
+                _changeState(creep, 'goToRoom');
                 break;
         }
     }
