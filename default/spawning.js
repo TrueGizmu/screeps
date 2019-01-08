@@ -15,9 +15,9 @@ module.exports = {
 
         //move it later
         var warFlag = _.find(Game.flags, f => f.name.startsWith('Warflag'));
-        if (warFlag && warFlag.roomName == room.name) {
+        if (warFlag && warFlag.pos.roomName == room.name) {
             //warFlag in a room with container - removing
-            console.log(`Removing ${warFlag.name} from ${warFlag.roomName}`);
+            console.log(`Removing ${warFlag.name} from ${warFlag.pos.roomName}`);
             warFlag.remove();
         }
 
@@ -28,8 +28,10 @@ module.exports = {
         var upgraders = _.filter(Game.creeps, creep => creep.memory.role == 'upgrader' && creep.memory.roomName == room.name);
         var builders = _.filter(Game.creeps, creep => creep.memory.role == 'builder' && creep.memory.roomName == room.name);
         var miners = _.filter(Game.creeps, creep => creep.memory.role == 'miner' && creep.memory.roomName == room.name);
-        var zergs = _.filter(Game.creeps, creep => creep.name.startsWith('Zerg'));
+        var zergClaimer = _.filter(Game.creeps, creep => creep.name == 'ZergClaimer');
+        var zergs = _.filter(Game.creeps, creep => creep.memory.role == 'zerg' && creep.name == 'ZergClaimer');
         var clickers = _.filter(Game.creeps, creep => creep.memory.role == 'clicker');
+        
 
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
 
@@ -65,8 +67,13 @@ module.exports = {
                 return;
             }
 
+            if (warFlag && (!warFlag.room || !warFlag.room.controller.my) && zergClaimer.length == 0) {
+                spawn.spawnCreep([CLAIM,MOVE, MOVE, MOVE], 'ZergClaimer', { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
+                return;
+            }
+
             if (warFlag && (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 150)))) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.roomName } });
+                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
                 return;
             }
 
