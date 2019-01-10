@@ -64,7 +64,7 @@ if (!StructureSpawn.prototype._spawnCreep) {
         const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy'];
         const upgraderNames = ['TVM0013', 'TVM0050', 'TVM0001', 'TVM0120', 'TVM0002', 'TVM0051', 'TVM0036'];
         const minerNames = ['Ryjowka', 'Sznupka', 'Czarna', 'Kopacz', 'Wiertauka', 'Koper'];
-        const zergNames = ['ZergQueen', 'ZergPrincess', 'Zergling', 'ZergMinion'];
+        const zergNames = ['ZergQueen', 'ZergPrincess', 'Zergling', 'ZergMinion', 'ZergHydralisk', 'ZergDrone', 'ZergMutalisk'];
 
         let newName = name;
         let roleName = ((opts != null && opts.memory != null) ? opts.memory.role : undefined);
