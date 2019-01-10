@@ -47,8 +47,6 @@ module.exports.loop = function () {
         }
     }
 
-    common.clearMemory();
-
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
         if (creep.spawning) {
@@ -72,6 +70,10 @@ module.exports.loop = function () {
         if (creep.memory.role == 'clicker') {
             roleClicker.run(creep);
         }
+    }
+
+    if (Game.time % 10 == 0) {
+        common.clearMemory();
     }
 
     try {
