@@ -9,7 +9,7 @@
 
 module.exports = {
 
-    run: function (room) {
+    spawn: function (room) {
         //if there is no containers do not spawn - zerg tiimeee!
         if (!room.getContainers().length) return;
 

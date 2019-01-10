@@ -5,12 +5,11 @@ var roleMiner = require('role.miner');
 var roleZerg = require("role.zerg");
 var roleClicker = require("role.clicker");
 
-
-var spawnController = require('spawning');
 var defences = require('defences');
 var common = require("common");
 var prototypes = require("prototypes");
 var utilsStats = require('utils.stats');
+var utilsBirthControl = require('utils.birthControl');
 
 
 module.exports.loop = function () {
@@ -40,7 +39,7 @@ module.exports.loop = function () {
 
         defences.run(currentRoom);
 
-        spawnController.run(currentRoom);
+        utilsBirthControl.spawn(currentRoom);
 
         if (Game.time % 10 == 0) {
             common.linksTransfer(currentRoom);
