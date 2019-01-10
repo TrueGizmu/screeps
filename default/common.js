@@ -19,7 +19,7 @@ module.exports = {
     getWarflag() {
         var warflag = Game.flags['Warflag'];
 
-        if (!checkWarflagIfReady(warflag)) {
+        if (!this.checkWarflagIfReady(warflag)) {
             return undefined;
         }
 
