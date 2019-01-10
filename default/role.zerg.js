@@ -87,6 +87,7 @@ module.exports = {
                 creep.moveTo(flag, { visualizePathStyle: { stroke: '#ffaa00' } });
 
                 if (creep.pos.isEqualTo(flag)) {
+                    console.log(`${creep.name} is passing ${flag.name}`);
                     creep.memory.signPostNames.shift();
                 }
                 break;
