@@ -15,7 +15,7 @@ module.exports = {
         if (!towers) return;
 
         var hostiles = room.find(FIND_HOSTILE_CREEPS);
-        utilsStats.setHostile(hostiles.length, room.name);
+        utilsStats.setHostiles(hostiles.length, room.name);
 
         towers.forEach(tower => {
             var closestHostile = tower.pos.findClosestByRange(hostiles);
