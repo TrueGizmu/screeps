@@ -13,6 +13,51 @@ function _changeState(creep, nextState) {
     creep.memory.whatToDo = nextState;
 }
 
+function _work(creep) {
+    if (!creep.memory.mining && creep.carry.energy == 0) {
+        creep.memory.mining = true;
+        creep.say('kop kop');
+    }
+    if (creep.memory.mining && creep.carry.energy == creep.carryCapacity) {
+        creep.memory.mining = false;
+        creep.say('work work');
+    }
+
+    if (creep.memory.mining) {
+        var hostileStruct = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, { filter: f => f.energy });
+
+        if (hostileStruct) {
+            if (creep.withdraw(hostileStruct, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(hostileStruct, { visualizePathStyle: { stroke: '#ffaa00' } });
+            }
+            return;
+        }
+
+        var source = creep.pos.findClosestByPath(FIND_SOURCES, { filter: (str) => { return str.energy >= creep.carryCapacity; } });
+        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
+        }
+    }
+    else {
+        if (common.storeEnergy(creep)) {
+            return;
+        }
+
+        var target = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
+        if (target) {
+            creep.say("Buduj raz");
+            if (creep.build(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, { visualizePathStyle: { stroke: '#317ef9', opacity: 0.8 } });
+            }
+            return;
+        }
+
+        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
+        }
+    }
+}
+
 module.exports = {
     run(creep) {
         switch (creep.memory.whatToDo) {
@@ -77,51 +122,30 @@ module.exports = {
             case 'buildSpawnConstructionSite':
                 var warFlag = Game.flags['Warflag'];
                 creep.room.createConstructionSite(warFlag.pos.x, warFlag.pos.y, STRUCTURE_SPAWN, warFlag.memory.spawnName);
-                _changeState(creep, 'work');
+                _changeState(creep, 'buildSpawn');
+                break;
+            case 'buildSpawn':
+                var warFlag = Game.flags['Warflag'];
+                if (Game.spawns[warFlag.memory.spawnName]) {
+                    _changeState(creep, 'dismantleHostileStructures');
+                    break;
+                }
+                _work(creep);
+                break;
+            case 'dismantleHostileStructures':
+                var itemToDismantle = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+                if (!itemToDismantle) {
+                    _changeState(creep, 'work');
+                    break;
+                }
+
+                if (creep.dismantle(itemToDismantle) != OK) {
+                    creep.say("seek & destroy");
+                    creep.moveTo(itemToDismantle, { visualizePathStyle: { stroke: '#ffaa00' } });
+                }
                 break;
             case 'work':
-                if (!creep.memory.mining && creep.carry.energy == 0) {
-                    creep.memory.mining = true;
-                    creep.say('kop kop');
-                }
-                if (creep.memory.mining && creep.carry.energy == creep.carryCapacity) {
-                    creep.memory.mining = false;
-                    creep.say('work work');
-                }
-
-                if (creep.memory.mining) {
-                    var hostileStruct = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, { filter: f => f.energy });
-
-                    if (hostileStruct) {
-                        if (creep.withdraw(hostileStruct, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(hostileStruct, { visualizePathStyle: { stroke: '#ffaa00' } });
-                        }
-                        break;
-                    }
-
-                    var source = creep.pos.findClosestByPath(FIND_SOURCES, { filter: (str) => { return str.energy >= creep.carryCapacity; } });
-                    if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
-                    }
-                }
-                else {
-                    if (common.storeEnergy(creep)) {
-                        return;
-                    }
-
-                    var target = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
-                    if (target) {
-                        creep.say("Buduj raz");
-                        if (creep.build(target) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target, { visualizePathStyle: { stroke: '#317ef9', opacity: 0.8 } });
-                        }
-                        return;
-                    }
-
-                    if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
-                    }
-                }
+                _work(creep);
                 break;
             default:
                 _changeState(creep, 'goToRoom');
