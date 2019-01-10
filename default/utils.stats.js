@@ -34,19 +34,19 @@ function _generateRooms() {
 
 module.exports = {
 
-    gather: function () {
+    gather () {
 
-        if (Memory.cpu.length > 50) {
-            Memory.cpu.shift();
+        if (Memory.buffors.cpu.length > 50) {
+            Memory.buffors.cpu.shift();
         }
 
-        Memory.cpu.push(Game.cpu.getUsed());
+        Memory.buffors.cpu.push(Game.cpu.getUsed());
 
         if (Game.time % 20 == 0) {
 
             Memory.stats = {
                 cpu: {
-                    percentUsage: (_.sum(Memory.cpu) / Memory.cpu.length / Game.cpu.limit * 100).toFixed(2),
+                    percentUsage: (_.sum(Memory.buffors.cpu) / Memory.buffors.cpu.length / Game.cpu.limit * 100).toFixed(2),
                     available: Game.cpu.tickLimit,
                     bucket: Game.cpu.bucket
                 },

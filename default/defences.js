@@ -12,14 +12,14 @@ module.exports = {
         var towers = room.getTowers();
         
         if (!towers) return;
+
+        var hostiles = room.find(FIND_HOSTILE_CREEPS);
         
         towers.forEach( tower => {
-            var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            var closestHostile = tower.pos.findClosestByRange(hostiles);
             if (closestHostile) {
-                var username = closestHostile.owner.username;
-                console.log(`User ${username} spotted in room ${room.name}`);
-                Game.notify(`User ${username} spotted in room ${room.name}`);
                 tower.attack(closestHostile);
+                continue;
             }
             
             if (tower.energy > 200) {
