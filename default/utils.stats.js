@@ -38,16 +38,15 @@ function _generateRooms() {
 module.exports = {
 
     setHostiles(count, roomName) {
-        var hostilesInRoom = Memory.buffors.hostiles[roomName];
 
-        if (!hostilesInRoom) {
+        if (!Memory.buffors.hostiles[roomName]) {
             Memory.buffors.hostiles[roomName] = [];
         }
-        else if (hostilesInRoom.length > 50) {
-            hostilesInRoom.shift();
+        else if (Memory.buffors.hostiles[roomName].length > 50) {
+            Memory.buffors.hostiles[roomName].shift();
         }
 
-        hostilesInRoom.push(count);
+        Memory.buffors.hostiles[roomName].push(count);
     },
 
     gather () {
