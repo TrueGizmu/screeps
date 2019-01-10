@@ -8,6 +8,14 @@
  */
 
 module.exports = {
+    checkWarflagIfReady(warflag) {
+        if (!warflag) return false;
+
+        if (!warflag.memory) return false;
+
+        return warflag.memory.isReady == true;
+    },
+
     getWarflag() {
         var warflag = Game.flags['Warflag'];
 
@@ -16,14 +24,6 @@ module.exports = {
         }
 
         return warflag;
-    },
-
-    checkWarflagIfReady(warflag) {
-        if (!warflag) return false;
-
-        if (!warflag.memory) return false;
-
-        return warflag.memory.isReady == true;
     },
 
     clearMemory() {
