@@ -76,7 +76,7 @@ module.exports = {
                     return;
                 }
     
-                if (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 150))) {
+                if (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 300))) {
                     spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
                     return;
                 }
