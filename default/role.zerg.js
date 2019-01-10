@@ -90,6 +90,15 @@ module.exports = {
                 }
 
                 if (creep.memory.mining) {
+                    var hostileStruct = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, { filter: f => f.energy });
+
+                    if (hostileStruct) {
+                        if (creep.withdraw(hostileStruct, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(hostileStruct, { visualizePathStyle: { stroke: '#ffaa00' } });
+                        }
+                        break;
+                    }
+
                     var source = creep.pos.findClosestByPath(FIND_SOURCES, { filter: (str) => { return str.energy >= creep.carryCapacity; } });
                     if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
