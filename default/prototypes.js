@@ -6,6 +6,8 @@
  * var mod = require('prototypes');
  * mod.thing == 'a thing'; // true
  */
+
+ var common = require('common');
  
 Object.defineProperty(StructureContainer.prototype, 'memory', {
     get: function() {
@@ -91,7 +93,7 @@ if (!StructureSpawn.prototype._spawnCreep) {
                     default:
                         newName = `Noname${Memory.myCreepNameCounter++}`;
                 }
-                console.log(`Trying new name ${newName}`);
+                console.log(`Trying name ${newName}`);
                 if (this._spawnCreep(body, newName, { dryRun: true }) == OK)
                     break;
             }
@@ -99,7 +101,7 @@ if (!StructureSpawn.prototype._spawnCreep) {
 
         // Now we call the original function passing in our generated name and 
         // returning the value
-        console.log(`Spawning new ${roleName} named ${newName}`);
+        console.log(`${this.room.name}: Spawning new ${roleName} named ${newName}`);
         return this._spawnCreep(body, newName, opts);
     };
 };
@@ -110,7 +112,7 @@ Room.prototype.mapTowers = function() {
         this.memory.towers = [];
     }
     
-    var roomTowers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_TOWER);
+    var roomTowers = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_TOWER);
 
     if (!roomTowers) return;
     
@@ -149,7 +151,7 @@ Room.prototype.mapContainers = function() {
         this.memory.containers = [];
     }
     
-    var roomContainers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
+    var roomContainers = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
 
     if (!roomContainers) return;
     
@@ -185,7 +187,7 @@ Room.prototype.mapLinks = function() {
         this.memory.links = [];
     }
     
-    var roomLinks = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_LINK);
+    var roomLinks = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_LINK);
 
     if (!roomLinks) return;
     
@@ -198,9 +200,21 @@ Room.prototype.mapLinks = function() {
         }
     }
 };
+
+Room.prototype.setAlias = function() {
+
+    if (this.memory.alias) return;
+    
+    var warflag = common.getWarflag();
+    if (!warflag) return;
+
+    this.memory.alias = warflag.memory.newRoomAlias;
+    console.log(`Room mapping ${this.name} - added alias ${this.memory.alias}`);
+};
  
 Room.prototype.mapInMemory = function() {
     
+    this.setAlias();
     this.mapTowers();
     this.mapSpawns();
     this.mapContainers();

@@ -23,10 +23,11 @@ module.exports.loop = function () {
         Game.rooms['E43N29'].createConstructionSite(33,25, STRUCTURE_EXTENSION);
     }*/
 
-    for (var roomName in Memory.rooms) {
+    for (var roomName in Game.rooms) {
 
         var currentRoom = Game.rooms[roomName];
-        if (!currentRoom) continue;
+        //if no room or no controller or not mine then next ;)
+        if (!currentRoom || !currentRoom.controller || !currentRoom.controller.my) continue;
 
         if (Game.time % 100 == 0) {
             try {

@@ -7,6 +7,8 @@
  * mod.thing == 'a thing'; // true
  */
 
+var common = require('common');
+
 module.exports = {
 
     spawn: function (room) {
@@ -14,10 +16,10 @@ module.exports = {
         if (!room.getContainers().length) return;
 
         //move it later
-        var warFlag = _.find(Game.flags, f => f.name.startsWith('Warflag'));
+        var warFlag = common.getWarflag();
         if (warFlag && warFlag.pos.roomName == room.name) {
-            //warFlag in a room with container - removing
-            console.log(`Removing ${warFlag.name} from ${warFlag.pos.roomName}`);
+            //warFlag in a room with container - removing, room can live by its own now - zergs off
+            console.log(`${warFlag.pos.roomName}: Removing ${warFlag.name}`);
             warFlag.remove();
         }
 
@@ -52,12 +54,12 @@ module.exports = {
                 return;
             }
 
-            if (room.name == 'E43N29' && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
+            if (!_.some(room.memory.links) && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
                 spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'upgrader', roomName: room.name } });
                 return;
             }
 
-            if (room.name != 'E43N29' && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
+            if (_.some(room.memory.links) && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
                 spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], { memory: { role: 'upgrader', roomName: room.name } });
                 return;
             }
@@ -67,14 +69,17 @@ module.exports = {
                 return;
             }
 
-            if (warFlag && (!warFlag.room || !warFlag.room.controller.my) && zergClaimer.length == 0) {
-                spawn.spawnCreep([CLAIM,MOVE, MOVE, MOVE], 'ZergClaimer', { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
-                return;
-            }
-
-            if (warFlag && (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 150)))) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
-                return;
+            //zergzz
+            if (warFlag && warFlag.memory.originRoomName == room.name) {
+                if (zergClaimer.length == 0 && (!warFlag.room || !warFlag.room.controller.my)) {
+                    spawn.spawnCreep([CLAIM,MOVE, MOVE, MOVE], 'ZergClaimer', { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
+                    return;
+                }
+    
+                if (zergs.length < 2 || (zergs.length < 3 && _.some(zergs, z => z.ticksToLive < 150))) {
+                    spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
+                    return;
+                }
             }
 
             if (clickers.length < _.filter(Game.flags, f => f.color == COLOR_PURPLE).length) {

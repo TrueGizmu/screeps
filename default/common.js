@@ -7,7 +7,25 @@
  * mod.thing == 'a thing'; // true
  */
 
-module.exports = { 
+module.exports = {
+    getWarflag() {
+        var warflag = Game.flags['Warflag'];
+
+        if (!checkWarflagIfReady(warflag)) {
+            return undefined;
+        }
+
+        return warflag;
+    },
+
+    checkWarflagIfReady(warflag) {
+        if (!warflag) return false;
+
+        if (!warflag.memory) return false;
+
+        return warflag.memory.isReady == true;
+    },
+
     clearMemory() {
         for(var name in Memory.creeps) {
             if (!Game.creeps[name]) {
