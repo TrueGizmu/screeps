@@ -6,6 +6,7 @@
  * var mod = require('defences');
  * mod.thing == 'a thing'; // true
  */
+var utilsStats = require('utils.stats');
 
 module.exports = {
     run(room) {
@@ -14,6 +15,7 @@ module.exports = {
         if (!towers) return;
 
         var hostiles = room.find(FIND_HOSTILE_CREEPS);
+        utilsStats.setHostile(hostiles.length, room.name);
 
         towers.forEach(tower => {
             var closestHostile = tower.pos.findClosestByRange(hostiles);

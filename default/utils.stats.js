@@ -13,6 +13,8 @@ function _generateRooms() {
         var x = Game.rooms[roomName];
         if (!x.memory || !x.memory.alias) continue;
 
+        var hostiles = Memory.buffors.hostiles[roomName];
+
         rooms[x.memory.alias] = {
             energyAvailable: x.energyAvailable,
             energyCapacityAvailable: x.energyCapacityAvailable,
@@ -25,7 +27,8 @@ function _generateRooms() {
             },
             storage: x.storage ? x.storage.store : null,
             terminal: x.terminal ? x.terminal.store : null,
-            roles: _(Game.creeps).filter(c => c.memory.roomName == x.name).countBy(c => c.memory.role).value()
+            roles: _(Game.creeps).filter(c => c.memory.roomName == x.name).countBy(c => c.memory.role).value(),
+            hostiles: _.max(hostiles)
         }
     }
 
@@ -33,6 +36,19 @@ function _generateRooms() {
 }
 
 module.exports = {
+
+    setHostiles(count, roomName) {
+        var hostilesInRoom = Memory.buffors.hostiles[roomName];
+
+        if (!hostilesInRoom) {
+            Memory.buffors.hostiles[roomName] = [];
+        }
+        else if (hostilesInRoom.length > 50) {
+            hostilesInRoom.shift();
+        }
+
+        hostilesInRoom.push(count);
+    },
 
     gather () {
 
