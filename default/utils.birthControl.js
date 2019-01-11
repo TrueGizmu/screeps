@@ -30,8 +30,8 @@ module.exports = {
         var upgraders = _.filter(Game.creeps, creep => creep.memory.role == 'upgrader' && creep.memory.roomName == room.name);
         var builders = _.filter(Game.creeps, creep => creep.memory.role == 'builder' && creep.memory.roomName == room.name);
         var miners = _.filter(Game.creeps, creep => creep.memory.role == 'miner' && creep.memory.roomName == room.name);
-        var zergClaimer = _.filter(Game.creeps, creep => creep.name == 'ZergClaimer' && creep.memory.roomName == room.name);
-        var zergs = _.filter(Game.creeps, creep => creep.memory.role == 'zerg' && creep.name != 'ZergClaimer' && creep.memory.roomName == room.name);
+        var zergClaimer = _.filter(Game.creeps, creep => creep.name == 'ZergClaimer');
+        var zergs = _.filter(Game.creeps, creep => creep.memory.role == 'zerg' && creep.name != 'ZergClaimer');
         var clickers = _.filter(Game.creeps, creep => creep.memory.role == 'clicker');
 
 
