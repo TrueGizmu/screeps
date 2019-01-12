@@ -38,7 +38,7 @@ module.exports = {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
 
         if (Game.time % 50 == 0) {
-            console.log('Room:', room.name, ' Harvesters: ', harvesters.length, ' Upgraders: ', upgraders.length, ' Builders: ', builders.length,
+            console.log('Room:', room.memory.alias, ' Harvesters: ', harvesters.length, ' Upgraders: ', upgraders.length, ' Builders: ', builders.length,
                 ' Miners:', miners.length, ' Zergs:', zergs.length);
         }
 
