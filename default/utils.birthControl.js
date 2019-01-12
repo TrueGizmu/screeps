@@ -54,14 +54,16 @@ module.exports = {
                 return;
             }
 
-            if (!_.some(room.memory.links) && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'upgrader', roomName: room.name } });
-                return;
-            }
-
-            if (_.some(room.memory.links) && (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3))) {
-                if (!(room.storage && room.storage.store[RESOURCE_ENERGY] < 100000 && upgraders.length >= 2)) {
-                    spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], { memory: { role: 'upgrader', roomName: room.name } });
+            if (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3)) {
+                if (!room.storage || (room.storage && room.storage.store[RESOURCE_ENERGY] >= 100000) || upgraders.length < 2) {
+                    var body = [];
+                    if (_.some(room.memory.links)) {
+                        body = [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE];
+                    }
+                    else {
+                        body = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+                    }
+                    spawn.spawnCreep(body, { memory: { role: 'upgrader', roomName: room.name } });
                     return;
                 }
             }
