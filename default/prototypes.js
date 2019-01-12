@@ -61,9 +61,9 @@ if (!StructureSpawn.prototype._spawnCreep) {
         } 
 
         const harvesterNames = ['Ryjjjcio', 'Ryjek', 'Slave', 'Parofcia', 'Grzybcio', 'Paruwa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
-        const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy'];
-        const upgraderNames = ['TVM0013', 'TVM0050', 'TVM0001', 'TVM0120', 'TVM0002', 'TVM0051', 'TVM0036'];
-        const minerNames = ['Ryjowka', 'Sznupka', 'Czarna', 'Kopacz', 'Wiertauka', 'Koper'];
+        const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy', 'Robol', 'Majster'];
+        const upgraderNames = ['TVM0013', 'TVM0050', 'TVM0001', 'TVM0120', 'TVM0002', 'TVM0051', 'TVM0036', 'TVM0128', 'TVM0111'];
+        const minerNames = ['Ryjowka', 'Sznupka', 'Czarna', 'Kopacz', 'Wiertauka', 'Koper', 'Gornik', 'Wiertlo', 'Kopara'];
         const zergNames = ['ZergQueen', 'ZergPrincess', 'Zergling', 'ZergMinion', 'ZergHydralisk', 'ZergDrone', 'ZergMutalisk'];
 
         let newName = name;
