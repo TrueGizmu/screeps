@@ -51,7 +51,7 @@ module.exports = {
 
     gather() {
 
-        if (Memory.buffors.cpu.length > 50) {
+        if (Memory.buffors.cpu.length > 25) {
             Memory.buffors.cpu.shift();
         }
 
