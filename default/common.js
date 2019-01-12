@@ -86,13 +86,19 @@ module.exports = {
             target = creep.pos.findClosestByRange(_.filter(creep.room.getLinks('IN'), l => l.energy != l.energyCapacity));
         }
 
-        if (target) {
-            if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+        if (!target) {
+            if (creep.room.terminal && creep.room.terminal.store[RESOURCE_ENERGY] < 150000 && _.sum(creep.room.terminal.store) != creep.room.terminal.storeCapacity) {
+                target = creep.room.terminal;
             }
         }
-        else if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] < 700000 && _.sum(creep.room.storage.store) != creep.room.storage.storeCapacity) {
-            target = creep.room.storage;
+
+        if (!target) {
+            if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] < 700000 && _.sum(creep.room.storage.store) != creep.room.storage.storeCapacity) {
+                target = creep.room.storage;
+            }
+        }
+
+        if (target) {
             if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
             }
@@ -103,8 +109,15 @@ module.exports = {
 
     storeMinerals(creep) {
         let target;
-        if (creep.room.storage && _.sum(creep.room.storage.store) != creep.room.storage.storeCapacity) {
+        if (creep.room.terminal && _.sum(creep.room.terminal.store) != creep.room.terminal.storeCapacity) {
+            target = creep.room.terminal;
+        }
+
+        if (!target && creep.room.storage && _.sum(creep.room.storage.store) != creep.room.storage.storeCapacity) {
             target = creep.room.storage;
+        }
+
+        if (target) {
             for (var item in creep.carry) {
                 if (creep.transfer(target, item) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
