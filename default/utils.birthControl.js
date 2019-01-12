@@ -69,7 +69,7 @@ module.exports = {
             }
 
             if (constructionSites.length > 0 && builders.length < 2) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'builder', roomName: room.name } });
+                spawn.spawnCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'builder', roomName: room.name } });
                 return;
             }
 
