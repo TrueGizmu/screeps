@@ -7,10 +7,10 @@
  * mod.thing == 'a thing'; // true
  */
 
- var common = require('common');
- 
+var common = require('common');
+
 Object.defineProperty(StructureContainer.prototype, 'memory', {
-    get: function() {
+    get: function () {
         if (!this._memory) {
             this._memory = _.find(this.room.memory.containers, c => c.id == this.id);
         }
@@ -21,7 +21,7 @@ Object.defineProperty(StructureContainer.prototype, 'memory', {
 });
 
 Object.defineProperty(StructureContainer.prototype, 'isFull', {
-    get: function() {
+    get: function () {
         if (!this._isFull) {
             this._isFull = _.sum(this.store) == this.storeCapacity;
         }
@@ -32,7 +32,7 @@ Object.defineProperty(StructureContainer.prototype, 'isFull', {
 });
 
 Object.defineProperty(StructureContainer.prototype, 'isEmpty', {
-    get: function() {
+    get: function () {
         if (!this._isEmpty) {
             this._isEmpty = _.sum(this.store) == 0;
         }
@@ -41,24 +41,24 @@ Object.defineProperty(StructureContainer.prototype, 'isEmpty', {
     enumerable: false,
     configurable: true
 });
- 
+
 // Make sure the method has not already been overwritten
 if (!StructureSpawn.prototype._spawnCreep) {
     StructureSpawn.prototype._spawnCreep = StructureSpawn.prototype.spawnCreep;
-    
+
     // The original signature: spawnCreep(body, [name], [opts])
     // Make a new version with the signature spawnCreep(body, [opts])
     StructureSpawn.prototype.spawnCreep = function (body, name = null, opts = undefined) {
-        console.log('body',JSON.stringify(body));
+        console.log('body', JSON.stringify(body));
         console.log('opts', JSON.stringify(opts));
-        console.log('name',JSON.stringify(name));
-        
-        if (!Memory.myCreepNameCounter) Memory.myCreepNameCounter = 0; 
+        console.log('name', JSON.stringify(name));
+
+        if (!Memory.myCreepNameCounter) Memory.myCreepNameCounter = 0;
         // handling case when name is null, but opts are not
-        if(!opts && _.isObject(name)) {
+        if (!opts && _.isObject(name)) {
             opts = name;
             name = undefined;
-        } 
+        }
 
         const harvesterNames = ['Ryjjjcio', 'Ryjek', 'Slave', 'Parofcia', 'Grzybcio', 'Paruwa', 'Ryyjkkk', 'Glinoryjec', 'Kiwi'];
         const builderNames = ['Felix', 'FixIt', 'Bob', 'Budowniczy', 'Robol', 'Majster'];
@@ -68,31 +68,33 @@ if (!StructureSpawn.prototype._spawnCreep) {
 
         let newName = name;
         let roleName = ((opts != null && opts.memory != null) ? opts.memory.role : undefined);
-        let canCreate;
+
 
         if (!newName) {
-
+            let roomAlias = this.room.memory.alias;
+            let sample;
             // Now we need to generate a name and make sure it hasn't been taken
             for (let i = 0; i < 5; i++) {
                 switch (roleName) {
                     case 'harvester':
-                        newName = _.sample(harvesterNames);
+                        sample = _.sample(harvesterNames);
                         break;
                     case 'builder':
-                        newName = _.sample(builderNames);
+                        sample = _.sample(builderNames);
                         break;
                     case 'upgrader':
-                        newName = _.sample(upgraderNames);
+                        sample = _.sample(upgraderNames);
                         break;
                     case 'miner':
-                        newName = _.sample(minerNames);
+                        sample = _.sample(minerNames);
                         break;
                     case 'zerg':
-                        newName = _.sample(zergNames);
+                        sample = _.sample(zergNames);
                         break;
                     default:
-                        newName = `Noname${Memory.myCreepNameCounter++}`;
+                        sample = `Noname${Memory.myCreepNameCounter++}`;
                 }
+                newName = `${sample}_${roomAlias}`;
                 console.log(`Trying name ${newName}`);
                 if (this._spawnCreep(body, newName, { dryRun: true }) == OK)
                     break;
@@ -105,69 +107,69 @@ if (!StructureSpawn.prototype._spawnCreep) {
         return this._spawnCreep(body, newName, opts);
     };
 };
- 
-Room.prototype.mapTowers = function() {
+
+Room.prototype.mapTowers = function () {
 
     if (!this.memory.towers) {
         this.memory.towers = [];
     }
-    
+
     var roomTowers = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_TOWER);
 
     if (!roomTowers) return;
-    
+
     for (var i in roomTowers) {
         var id = roomTowers[i].id;
         if (!_.some(this.memory.towers, t => t.id == id)) {
-            
-            this.memory.towers.push({id: id});
-            console.log('Room mapping',this.name,'- added new tower', id);
+
+            this.memory.towers.push({ id: id });
+            console.log('Room mapping', this.name, '- added new tower', id);
         }
     }
 };
 
-Room.prototype.mapSpawns = function() {
+Room.prototype.mapSpawns = function () {
 
     if (!this.memory.spawns) {
         this.memory.spawns = [];
     }
-    
+
     var roomSpawns = this.find(FIND_MY_SPAWNS);
 
     if (!roomSpawns) return;
-    
+
     for (var i in roomSpawns) {
         var id = roomSpawns[i].id;
         if (!_.some(this.memory.spawns, t => t.id == id)) {
-            
-            this.memory.spawns.push({id: id});
-            console.log('Room mapping',this.name,'- added new spawn', id);
+
+            this.memory.spawns.push({ id: id });
+            console.log('Room mapping', this.name, '- added new spawn', id);
         }
     }
 };
 
-Room.prototype.mapContainers = function() {
+Room.prototype.mapContainers = function () {
     if (!this.memory.containers) {
         this.memory.containers = [];
     }
-    
+
     var roomContainers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
 
     if (!roomContainers) return;
-    
+
     for (var i in roomContainers) {
         var id = roomContainers[i].id;
         if (!_.some(this.memory.containers, t => t.id == id)) {
-            
+
             var sourceType = LOOK_ENERGY;
             var source = _.find(roomContainers[i].pos.findInRange(FIND_SOURCES, 1));
             if (!source) {
                 source = _.find(roomContainers[i].pos.findInRange(FIND_MINERALS, 1));
                 sourceType = LOOK_MINERALS;
             }
-            
-            this.memory.containers.push({id: id, sourceId:source.id, type:sourceType, isActive:true});
-            console.log('Room mapping',this.name,'- added new container', id, sourceType);
+
+            this.memory.containers.push({ id: id, sourceId: source.id, type: sourceType, isActive: true });
+            console.log('Room mapping', this.name, '- added new container', id, sourceType);
         }
         else {
             var container = roomContainers[i];
@@ -181,39 +183,39 @@ Room.prototype.mapContainers = function() {
     }
 };
 
-Room.prototype.mapLinks = function() {
+Room.prototype.mapLinks = function () {
 
     if (!this.memory.links) {
         this.memory.links = [];
     }
-    
+
     var roomLinks = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_LINK);
 
     if (!roomLinks) return;
-    
+
     for (var i in roomLinks) {
         var id = roomLinks[i].id;
         if (!_.some(this.memory.links, t => t.id == id)) {
-            
-            this.memory.links.push({id: id, direction: 'IN'});
-            console.log('Room mapping',this.name,'- added new link', id);
+
+            this.memory.links.push({ id: id, direction: 'IN' });
+            console.log('Room mapping', this.name, '- added new link', id);
         }
     }
 };
 
-Room.prototype.setAlias = function() {
+Room.prototype.setAlias = function () {
 
     if (this.memory.alias) return;
-    
+
     var warflag = common.getWarflag();
     if (!warflag) return;
 
     this.memory.alias = warflag.memory.newRoomAlias;
     console.log(`Room mapping ${this.name} - added alias ${this.memory.alias}`);
 };
- 
-Room.prototype.mapInMemory = function() {
-    
+
+Room.prototype.mapInMemory = function () {
+
     this.setAlias();
     this.mapTowers();
     this.mapSpawns();
@@ -221,19 +223,19 @@ Room.prototype.mapInMemory = function() {
     this.mapLinks();
 };
 
-Room.prototype.getTowers = function() {
-    return this.memory.towers.map( c => Game.getObjectById(c.id));
+Room.prototype.getTowers = function () {
+    return this.memory.towers.map(c => Game.getObjectById(c.id));
 };
 
-Room.prototype.getSpawns = function() {
-    return this.memory.spawns.map( c => Game.getObjectById(c.id));
+Room.prototype.getSpawns = function () {
+    return this.memory.spawns.map(c => Game.getObjectById(c.id));
 };
 
-Room.prototype.getContainers = function() {
-    return this.memory.containers.map( c => Game.getObjectById(c.id));
+Room.prototype.getContainers = function () {
+    return this.memory.containers.map(c => Game.getObjectById(c.id));
 };
 
-Room.prototype.getLinks = function(direction) {
+Room.prototype.getLinks = function (direction) {
     var links = this.memory.links;
     if (direction) {
         links = _.filter(links, c => c.direction == direction);
@@ -242,5 +244,5 @@ Room.prototype.getLinks = function(direction) {
 };
 
 module.exports = {
-    
+
 };
