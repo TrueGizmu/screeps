@@ -74,7 +74,7 @@ module.exports = {
         var source = position.findClosestByRange(sources);
         if (source) {
             if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
+                creep.moveTo(source, { visualizePathStyle: { stroke: '#f4ee42' } });
             }
         }
     },
@@ -110,7 +110,7 @@ module.exports = {
 
         if (target) {
             if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
+                creep.moveTo(target, { visualizePathStyle: { stroke: '#41ebf4' } });
             }
         }
 
