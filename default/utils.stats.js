@@ -49,7 +49,7 @@ module.exports = {
         Memory.buffors.hostiles[roomName].push(count);
     },
 
-    gather () {
+    gather() {
 
         if (Memory.buffors.cpu.length > 50) {
             Memory.buffors.cpu.shift();
@@ -61,9 +61,11 @@ module.exports = {
 
             Memory.stats = {
                 cpu: {
-                    percentUsage: (_.sum(Memory.buffors.cpu) / Memory.buffors.cpu.length / Game.cpu.limit * 100).toFixed(2),
+                    percentUsage: (100 * _.sum(Memory.buffors.cpu) / Memory.buffors.cpu.length / Game.cpu.limit).toFixed(2),
                     available: Game.cpu.tickLimit,
-                    bucket: Game.cpu.bucket
+                    bucket: Game.cpu.bucket,
+                    percentageMaxUsage: (100 * _.max(Memory.buffors.cpu) / Game.cpu.limit).toFixed(2),
+                    percentageMinUsage: (100 * _.min(Memory.buffors.cpu) / Game.cpu.limit).toFixed(2)
                 },
                 gcl: {
                     level: Game.gcl.level,
