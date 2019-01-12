@@ -151,7 +151,7 @@ Room.prototype.mapContainers = function() {
         this.memory.containers = [];
     }
     
-    var roomContainers = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
+    var roomContainers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
 
     if (!roomContainers) return;
     
