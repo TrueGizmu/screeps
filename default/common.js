@@ -79,7 +79,7 @@ module.exports = {
 
         if (!target) {
             var towers = creep.room.getTowers();
-            target = creep.pos.findClosestByRange(_.filter(towers, t => t.energy < (t.energyCapacity / 2)));
+            target = creep.pos.findClosestByRange(_.filter(towers, t => t.energy < (t.energyCapacity * 2 / 3)));
         }
 
         if (!target) {
