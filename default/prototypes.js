@@ -49,9 +49,6 @@ if (!StructureSpawn.prototype._spawnCreep) {
     // The original signature: spawnCreep(body, [name], [opts])
     // Make a new version with the signature spawnCreep(body, [opts])
     StructureSpawn.prototype.spawnCreep = function (body, name = null, opts = undefined) {
-        console.log('body', JSON.stringify(body));
-        console.log('opts', JSON.stringify(opts));
-        console.log('name', JSON.stringify(name));
 
         if (!Memory.myCreepNameCounter) Memory.myCreepNameCounter = 0;
         // handling case when name is null, but opts are not
@@ -104,6 +101,7 @@ if (!StructureSpawn.prototype._spawnCreep) {
         // Now we call the original function passing in our generated name and 
         // returning the value
         console.log(`${this.room.name}: Spawning new ${roleName} named ${newName}`);
+        console.log('body', JSON.stringify(body));
         return this._spawnCreep(body, newName, opts);
     };
 };
