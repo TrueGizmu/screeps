@@ -44,7 +44,6 @@ module.exports = {
                 container = Game.getObjectById(container.id);
                 if (!container.isEmpty) {
                     if (!creep.pos.isNearTo(container)) {
-                        // try to reach tombstone
                         creep.moveTo(container);
                     }
                     else {
@@ -60,12 +59,18 @@ module.exports = {
             common.gather(creep);
         }
         else {
+            let target;
             if (_.sum(creep.carry) > creep.carry.energy) {
                 
-                common.storeMinerals(creep);
+                target = common.storeMinerals(creep);
             }
             else {
-                common.storeEnergy(creep);
+                target = common.storeEnergy(creep);
+            }
+
+            if (!target) {
+                creep.say('Booriingg');
+                creep.moveTo(Game.getObjectById(creep.room.memory.spawns[0].id));
             }
         }
 	}

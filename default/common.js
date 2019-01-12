@@ -102,6 +102,7 @@ module.exports = {
     },
 
     storeMinerals(creep) {
+        let target;
         if (creep.room.storage && _.sum(creep.room.storage.store) != creep.room.storage.storeCapacity) {
             target = creep.room.storage;
             for (var item in creep.carry) {
@@ -110,6 +111,7 @@ module.exports = {
                 }
             }
         }
+        return target;
     },
 
     linksTransfer(room) {
