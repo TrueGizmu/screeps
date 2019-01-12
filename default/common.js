@@ -48,21 +48,25 @@ module.exports = {
         }
 
         var energyNeeded = creep.carryCapacity - _.sum(creep.carry);
-
         var containers = _.filter(creep.room.getContainers(), c => c.store[RESOURCE_ENERGY] >= energyNeeded);
-        if (creep.memory.role == 'upgrader') {
-            var outLinks = _.filter(creep.room.getLinks('OUT'), l => l.energy >= energyNeeded);
-            containers = containers.concat(outLinks);
+        let storage;
+        if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= energyNeeded) {
+            storage = creep.room.storage;
+        }
+        let sources;
+
+        switch (creep.memory.role) {
+            case 'upgrader':
+                var outLinks = _.filter(creep.room.getLinks('OUT'), l => l.energy >= energyNeeded);
+                sources = containers.concat(outLinks).concat(storage);
+                break;
+            default:
+                sources = containers.concat(storage);
+                break;
         }
 
-        if (containers.length > 0) {
-            var source = position.findClosestByRange(containers);
-            if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
-            }
-        }
-        else if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= energyNeeded) {
-            var source = creep.room.storage;
+        var source = position.findClosestByRange(sources);
+        if (source) {
             if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
             }
