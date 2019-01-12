@@ -60,6 +60,12 @@ module.exports = {
                 var outLinks = _.filter(creep.room.getLinks('OUT'), l => l.energy >= energyNeeded);
                 sources = containers.concat(outLinks).concat(storage);
                 break;
+            case 'harvester':
+                sources = containers;
+                if (sources.length == 0) {
+                    sources = sources.concat(storage);
+                }
+                break;
             default:
                 sources = containers.concat(storage);
                 break;
