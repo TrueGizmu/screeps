@@ -97,7 +97,7 @@ module.exports = {
         }
 
         if (!target) {
-            if (creep.room.terminal && creep.room.terminal.store[RESOURCE_ENERGY] < 150000 && _.sum(creep.room.terminal.store) != creep.room.terminal.storeCapacity) {
+            if (creep.room.terminal && creep.room.terminal.store[RESOURCE_ENERGY] < 100000 && _.sum(creep.room.terminal.store) != creep.room.terminal.storeCapacity) {
                 target = creep.room.terminal;
             }
         }
