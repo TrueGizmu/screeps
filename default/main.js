@@ -4,6 +4,7 @@ var roleBuilder = require('role.builder');
 var roleMiner = require('role.miner');
 var roleZerg = require("role.zerg");
 var roleClicker = require("role.clicker");
+var roleSpeditor = require('role.speditor');
 
 var defences = require('defences');
 var common = require("common");
@@ -69,6 +70,9 @@ module.exports.loop = function () {
         }
         if (creep.memory.role == 'clicker') {
             roleClicker.run(creep);
+        }
+        if (creep.memory.role == 'speditor') {
+            roleSpeditor.run(creep);
         }
     }
 
