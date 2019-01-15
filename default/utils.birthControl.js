@@ -61,7 +61,7 @@ module.exports = {
                         body = [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE];
                     }
                     else {
-                        body = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+                        body = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
                     }
                     spawn.spawnCreep(body, { memory: { role: 'upgrader', roomName: room.name } });
                     return;
