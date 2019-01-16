@@ -80,12 +80,17 @@ module.exports = {
     },
 
     storeEnergy(creep) {
-        var target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-                    structure.energy < structure.energyCapacity && creep.memory.roomName == structure.room.name;
-            }
-        });
+        var target = undefined
+
+        if (creep.room.energyAvailable < Math.min(creep.room.energyCapacity / 2, 750)) {
+
+            target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+                        structure.energy < structure.energyCapacity && creep.memory.roomName == structure.room.name;
+                }
+            });
+        }
 
         if (!target) {
             var towers = creep.room.getTowers();
