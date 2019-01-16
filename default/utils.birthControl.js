@@ -45,7 +45,7 @@ module.exports = {
         if (room.energyAvailable >= 750) {
 
             if (harvesters.length < 3) {
-                spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
+                spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
                 return;
             }
 
