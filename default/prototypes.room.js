@@ -6,7 +6,7 @@
  * var mod = require('prototypes.room');
  * mod.thing == 'a thing'; // true
  */
- 
+
 Room.prototype.mapTowers = function () {
 
     if (!this.memory.towers) {

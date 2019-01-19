@@ -53,26 +53,30 @@ module.exports.loop = function () {
         if (creep.spawning) {
             continue;
         }
-        if (creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
-        }
-        if (creep.memory.role == 'upgrader') {
-            roleUpgrader.run(creep);
-        }
-        if (creep.memory.role == 'builder') {
-            roleBuilder.run(creep);
-        }
-        if (creep.memory.role == 'miner') {
-            roleMiner.run(creep);
-        }
-        if (creep.memory.role == 'zerg') {
-            roleZerg.run(creep);
-        }
-        if (creep.memory.role == 'clicker') {
-            roleClicker.run(creep);
-        }
-        if (creep.memory.role == 'speditor') {
-            roleSpeditor.run(creep);
+        try {
+            if (creep.memory.role == 'harvester') {
+                roleHarvester.run(creep);
+            }
+            if (creep.memory.role == 'upgrader') {
+                roleUpgrader.run(creep);
+            }
+            if (creep.memory.role == 'builder') {
+                roleBuilder.run(creep);
+            }
+            if (creep.memory.role == 'miner') {
+                roleMiner.run(creep);
+            }
+            if (creep.memory.role == 'zerg') {
+                roleZerg.run(creep);
+            }
+            if (creep.memory.role == 'clicker') {
+                roleClicker.run(creep);
+            }
+            if (creep.memory.role == 'speditor') {
+                roleSpeditor.run(creep);
+            }
+        } catch (error) {
+            console.log(e.stack);
         }
     }
 
