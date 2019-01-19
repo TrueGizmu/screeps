@@ -48,11 +48,18 @@ module.exports = {
         }
 
         var energyNeeded = creep.carryCapacity - _.sum(creep.carry);
+
         var containers = _.filter(creep.room.getContainers(), c => c.store[RESOURCE_ENERGY] >= energyNeeded);
         let storage;
         if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= energyNeeded) {
             storage = creep.room.storage;
         }
+
+        let terminal;
+        if (creep.room.terminal && creep.room.terminal.store[RESOURCE_ENERGY] >= energyNeeded) {
+            terminal = creep.room.terminal;
+        }
+
         let sources;
 
         switch (creep.memory.role) {
@@ -62,8 +69,11 @@ module.exports = {
                 break;
             case 'harvester':
                 sources = containers;
-                if (sources.length == 0) {
+                if (sources.length == 0 && storage) {
                     sources = sources.concat(storage);
+                }
+                if (sources.length == 0 && terminal) {
+                    sources = sources.concat(terminal);
                 }
                 break;
             default:
@@ -80,9 +90,9 @@ module.exports = {
     },
 
     storeEnergy(creep) {
-        var target = undefined
-
-        if (creep.room.energyAvailable < Math.min(creep.room.energyCapacity / 2, 750)) {
+        var target = undefined;
+        
+        if (creep.room.energyAvailable < Math.min(creep.room.energyCapacityAvailable * 0.85, 1000)) {
 
             target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                 filter: (structure) => {
@@ -95,6 +105,15 @@ module.exports = {
         if (!target) {
             var towers = creep.room.getTowers();
             target = creep.pos.findClosestByRange(_.filter(towers, t => t.energy < (t.energyCapacity * 2 / 3)));
+        }
+        
+        if (!target && creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
+            target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+                        structure.energy < structure.energyCapacity && creep.memory.roomName == structure.room.name;
+                }
+            });
         }
 
         if (!target) {
