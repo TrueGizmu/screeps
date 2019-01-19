@@ -23,9 +23,11 @@ module.exports = {
                 tower.attack(closestHostile);
             }
             else if (tower.energy > 200) {
-                var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                var damagedStructures = _sortBy(creep.room.find(FIND_STRUCTURES, {
                     filter: structure => structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL
-                });
+                }), x=>x.hits);
+
+                var closestDamagedStructure = tower.pos.findClosestByRange(damagedStructures);
                 if (closestDamagedStructure) {
                     tower.repair(closestDamagedStructure);
                 }
