@@ -152,7 +152,7 @@ Room.prototype.getSpawns = function () {
 };
 
 Room.prototype.getContainers = function () {
-    return this.memory.containers.map(c => Game.getObjectById(c.id));
+    return _.filter(this.memory.containers.map(c => Game.getObjectById(c.id)), x => x);
 };
 
 Room.prototype.getLinks = function (direction) {
