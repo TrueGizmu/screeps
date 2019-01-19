@@ -12,44 +12,42 @@ var common = require('common');
 module.exports = {
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(creep.memory.loading && _.sum(creep.carry) == 0) {
-            creep.memory.loading = false;
-            creep.say('kop kop');
-	    }
-	    if(!creep.memory.loading && _.sum(creep.carry) == creep.carryCapacity) {
-	        creep.memory.loading = true;
-	        creep.say('zaap');
-	    }
-        
-	    if(!creep.memory.loading) {            
-            var storage = creep.room.storage;
-            if (storage && _.sum(storage.store) != storage.storeCapacity) {
-                if (!creep.pos.isNearTo(storage)) {
-                    creep.moveTo(storage);
+        switch (creep.memory.state) {
+            
+            case 'load':
+                if (_.sum(creep.carry) == creep.carryCapacity) {
+                    creep.memory.state = 'unload';
                 }
-                else {
-                    // withdraw all resource types
-                    for (var prop in storage.store) {
-                        creep.withdraw(storage, prop);
-                    }
+                                
+                var source = Game.getObjectById(creep.memory.sourceId);
+                if (!creep.pos.isNearTo(source)) {
+                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ff00ff', opacity: 0.8}});
+                    break;
                 }
-                return;
-            }
-        }
-        else {
-            let target;
-            if (_.sum(creep.carry) > creep.carry.energy) {
                 
-                target = common.storeMinerals(creep);
-            }
-            else {
-                target = common.storeEnergy(creep);
-            }
-
-            if (!target) {
-                creep.say('Booriingg');
-                creep.moveTo(Game.getObjectById(creep.room.memory.spawns[0].id));
-            }
+                if (creep.withdraw(source, RESOURCE_ENERGY) == OK) {
+                    creep.memory.state = 'unload';
+                }
+                break;
+                
+            case 'unload':
+                    if (_.sum(creep.carry) == 0) {
+                        creep.memory.state = 'load';
+                    }
+                
+                    var target = Game.getObjectById(creep.memory.targetId);
+                    if (!creep.pos.isNearTo(target)) {
+                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00ff', lineStyle:'dotted', opacity: 0.8}});
+                        break;
+                    }
+                
+                    for (var prop in creep.carry) {
+                        creep.transfer(target, prop);
+                    }
+                break;
+                
+            default:
+                creep.memory.state = 'load';
         }
 	}
 };
