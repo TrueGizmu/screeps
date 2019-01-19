@@ -43,14 +43,13 @@ module.exports = {
         }
 
         if (room.energyAvailable >= 750) {
-
-            if (harvesters.length < 3) {
-                spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
+            if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
+                spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], { memory: { role: 'miner', roomName: room.name } });
                 return;
             }
 
-            if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], { memory: { role: 'miner', roomName: room.name } });
+            if (harvesters.length < 3) {
+                spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
                 return;
             }
 
