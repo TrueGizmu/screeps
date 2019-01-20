@@ -79,7 +79,7 @@ Room.prototype.mapContainers = function () {
                 sourceType = LOOK_MINERALS;
             }
 
-            this.memory.miners.push({ sourceType: sourceType, sourceId: source.id, containerId: id });
+            this.memory.miners.push({ sourceType: sourceType, sourceId: source.id, containerId: id, strategy: 'fiftyFifty' });
             this.memory.containers.push({ id: id, sourceId: source.id, type: sourceType, isActive: true });
             console.log('Room mapping', this.name, '- added new container', id, sourceType);
         }
