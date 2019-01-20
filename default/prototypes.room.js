@@ -7,12 +7,33 @@
  * mod.thing == 'a thing'; // true
  */
 
-Room.prototype.mapTowers = function () {
-
+Room.prototype.createStructure = function () {
     if (!this.memory.towers) {
         this.memory.towers = [];
     }
 
+    if (!this.memory.spawns) {
+        this.memory.spawns = [];
+    }
+
+    if (!this.memory.containers) {
+        this.memory.containers = [];
+    }
+
+    if (!this.memory.links) {
+        this.memory.links = [];
+    }
+
+    if (!this.memory.labs) {
+        this.memory.labs = [];
+    }
+
+    if (!this.memory.miners) {
+        this.memory.miners = [];
+    }
+};
+
+Room.prototype.mapTowers = function () {
     var roomTowers = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_TOWER);
 
     if (!roomTowers) return;
@@ -28,11 +49,6 @@ Room.prototype.mapTowers = function () {
 };
 
 Room.prototype.mapSpawns = function () {
-
-    if (!this.memory.spawns) {
-        this.memory.spawns = [];
-    }
-
     var roomSpawns = this.find(FIND_MY_SPAWNS);
 
     if (!roomSpawns) return;
@@ -48,10 +64,6 @@ Room.prototype.mapSpawns = function () {
 };
 
 Room.prototype.mapContainers = function () {
-    if (!this.memory.containers) {
-        this.memory.containers = [];
-    }
-
     var roomContainers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
 
     if (!roomContainers) return;
@@ -67,6 +79,7 @@ Room.prototype.mapContainers = function () {
                 sourceType = LOOK_MINERALS;
             }
 
+            this.memory.miners.push({ sourceType: sourceType, sourceId: source.id, containerId: id });
             this.memory.containers.push({ id: id, sourceId: source.id, type: sourceType, isActive: true });
             console.log('Room mapping', this.name, '- added new container', id, sourceType);
         }
@@ -83,11 +96,6 @@ Room.prototype.mapContainers = function () {
 };
 
 Room.prototype.mapLinks = function () {
-
-    if (!this.memory.links) {
-        this.memory.links = [];
-    }
-
     var roomLinks = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_LINK);
 
     if (!roomLinks) return;
@@ -96,6 +104,16 @@ Room.prototype.mapLinks = function () {
         var id = roomLinks[i].id;
         if (!_.some(this.memory.links, t => t.id == id)) {
 
+            var container = _.find(roomLinks[i].pos.findInRange(FIND_STRUCTURES, 1, x => x.structureType == STRUCTURE_CONTAINER));
+            if (container) {
+                var source = _.find(roomLinks[i].pos.findInRange(FIND_SOURCES, 2));
+                if (source) {
+                    var minerInMemory = _.find(this.memory.miners, x => x.sourceId == source.id && containerId == container.id);
+                    if (minerInMemory) {
+                        minerInMemory.LinkId = id;
+                    }
+                }
+            }
             this.memory.links.push({ id: id, direction: 'IN' });
             console.log('Room mapping', this.name, '- added new link', id);
         }
@@ -103,11 +121,6 @@ Room.prototype.mapLinks = function () {
 };
 
 Room.prototype.mapLabs = function () {
-
-    if (!this.memory.labs) {
-        this.memory.labs = [];
-    }
-
     var items = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_LAB);
 
     if (!items) return;
@@ -135,6 +148,7 @@ Room.prototype.setAlias = function () {
 
 Room.prototype.mapInMemory = function () {
 
+    this.createStructure();
     this.setAlias();
     this.mapTowers();
     this.mapSpawns();
