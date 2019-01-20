@@ -8,8 +8,10 @@
  */
 
 module.exports = {
-    changeState(creep, nextState) {
-        console.log(`Changing creep ${creep.name} state to ${nextState}`);
+    changeState(creep, nextState, log = false) {
+        if (log) {
+            console.log(`Changing creep ${creep.name} state to ${nextState}`);
+        }
         creep.memory.whatToDo = nextState;
     },
 

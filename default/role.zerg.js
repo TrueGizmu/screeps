@@ -69,10 +69,10 @@ module.exports = {
                 if (creep.room.name == creep.memory.roomName) {
                     creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffaa00' } });
                     if (creep.getActiveBodyparts(CLAIM) > 0) {
-                        common.changeState(creep, 'claimController');
+                        common.changeState(creep, 'claimController', true);
                     }
                     else {
-                        common.changeState(creep, 'dismantleHostileSpawn');
+                        common.changeState(creep, 'dismantleHostileSpawn', true);
                     }
                     break;
                 }
@@ -100,7 +100,7 @@ module.exports = {
             case 'dismantleHostileSpawn':
                 var spawnToDismantle = creep.pos.findClosestByRange(FIND_HOSTILE_SPAWNS);
                 if (!spawnToDismantle) {
-                    common.changeState(creep, 'buildSpawnConstructionSite');
+                    common.changeState(creep, 'buildSpawnConstructionSite', true);
                     break;
                 }
 
@@ -118,12 +118,12 @@ module.exports = {
             case 'buildSpawnConstructionSite':
                 var warFlag = Game.flags['Warflag'];
                 creep.room.createConstructionSite(warFlag.pos.x, warFlag.pos.y, STRUCTURE_SPAWN, warFlag.memory.spawnName);
-                common.changeState(creep, 'buildSpawn');
+                common.changeState(creep, 'buildSpawn', true);
                 break;
             case 'buildSpawn':
                 var warFlag = Game.flags['Warflag'];
                 if (Game.spawns[warFlag.memory.spawnName]) {
-                    common.changeState(creep, 'dismantleHostileStructures');
+                    common.changeState(creep, 'dismantleHostileStructures', true);
                     break;
                 }
                 _work(creep);
@@ -131,7 +131,7 @@ module.exports = {
             case 'dismantleHostileStructures':
                 var itemToDismantle = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
                 if (!itemToDismantle) {
-                    common.changeState(creep, 'work');
+                    common.changeState(creep, 'work', true);
                     break;
                 }
 
@@ -144,7 +144,7 @@ module.exports = {
                 _work(creep);
                 break;
             default:
-                common.changeState(creep, 'goToRoom');
+                common.changeState(creep, 'goToRoom', true);
                 break;
         }
     }

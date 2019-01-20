@@ -104,7 +104,7 @@ Room.prototype.mapLinks = function () {
         var id = roomLinks[i].id;
         if (!_.some(this.memory.links, t => t.id == id)) {
 
-            var container = _.find(roomLinks[i].pos.findInRange(FIND_STRUCTURES, 1, x => x.structureType == STRUCTURE_CONTAINER));
+            var container = _.find(roomLinks[i].pos.findInRange(FIND_STRUCTURES, 1, { filter: x => x.structureType == STRUCTURE_CONTAINER }));
             if (container) {
                 var source = _.find(roomLinks[i].pos.findInRange(FIND_SOURCES, 2));
                 if (source) {
