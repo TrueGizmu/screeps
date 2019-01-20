@@ -108,9 +108,9 @@ Room.prototype.mapLinks = function () {
             if (container) {
                 var source = _.find(roomLinks[i].pos.findInRange(FIND_SOURCES, 2));
                 if (source) {
-                    var minerInMemory = _.find(this.memory.miners, x => x.sourceId == source.id && containerId == container.id);
+                    var minerInMemory = _.find(this.memory.miners, x => x.sourceId == source.id && x.containerId == container.id);
                     if (minerInMemory) {
-                        minerInMemory.LinkId = id;
+                        minerInMemory.linkId = id;
                     }
                 }
             }
