@@ -174,7 +174,7 @@ module.exports = {
 
         for (var i in allInLinks) {
             for (var o in allOutLinks) {
-                if (allOutLinks[o].energy < 799 && allInLinks[i].transferEnergy(allOutLinks[o]) == OK) {
+                if (allOutLinks[o].energy < 700 && allInLinks[i].transferEnergy(allOutLinks[o]) == OK) {
                     break;
                 }
             }
