@@ -15,15 +15,6 @@ var utilsBirthControl = require('utils.birthControl');
 
 module.exports.loop = function () {
 
-    /*if (Game.time%100 == 0) {
-        Game.rooms['E43N29'].createConstructionSite(24,25, STRUCTURE_TOWER);
-        Game.rooms['E43N29'].createConstructionSite(30,26, STRUCTURE_EXTENSION);
-        Game.rooms['E43N29'].createConstructionSite(30,27, STRUCTURE_EXTENSION);
-        Game.rooms['E43N29'].createConstructionSite(31,27, STRUCTURE_EXTENSION);
-        Game.rooms['E43N29'].createConstructionSite(32,26, STRUCTURE_EXTENSION);
-        Game.rooms['E43N29'].createConstructionSite(33,25, STRUCTURE_EXTENSION);
-    }*/
-
     for (var roomName in Game.rooms) {
 
         var currentRoom = Game.rooms[roomName];
@@ -76,7 +67,7 @@ module.exports.loop = function () {
                 roleSpeditor.run(creep);
             }
         } catch (error) {
-            console.log(e.stack);
+            console.log(error.stack);
         }
     }
 

@@ -8,6 +8,11 @@
  */
 
 module.exports = {
+    changeState(creep, nextState) {
+        console.log(`Changing creep ${creep.name} state to ${nextState}`);
+        creep.memory.whatToDo = nextState;
+    },
+
     checkWarflagIfReady(warflag) {
         if (!warflag) return false;
 
@@ -91,7 +96,7 @@ module.exports = {
 
     storeEnergy(creep) {
         var target = undefined;
-        
+
         if (creep.room.energyAvailable < Math.min(creep.room.energyCapacityAvailable * 0.85, 1000)) {
 
             target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
@@ -106,7 +111,11 @@ module.exports = {
             var towers = creep.room.getTowers();
             target = creep.pos.findClosestByRange(_.filter(towers, t => t.energy < (t.energyCapacity * 2 / 3)));
         }
-        
+
+        if (!target) {
+            target = creep.pos.findClosestByRange(_.filter(creep.room.getLinks('IN'), l => l.energy != l.energyCapacity));
+        }
+
         if (!target && creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
             target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                 filter: (structure) => {
@@ -114,10 +123,6 @@ module.exports = {
                         structure.energy < structure.energyCapacity && creep.memory.roomName == structure.room.name;
                 }
             });
-        }
-
-        if (!target) {
-            target = creep.pos.findClosestByRange(_.filter(creep.room.getLinks('IN'), l => l.energy != l.energyCapacity));
         }
 
         if (!target) {
@@ -167,7 +172,7 @@ module.exports = {
 
         for (var i in allInLinks) {
             for (var o in allOutLinks) {
-                if (allInLinks[i].transferEnergy(allOutLinks[o]) == OK) {
+                if (allOutLinks[o].energy < 799 && allInLinks[i].transferEnergy(allOutLinks[o]) == OK) {
                     break;
                 }
             }

@@ -12,65 +12,78 @@ var common = require('common');
 module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
-        if (creep.memory.loading && _.sum(creep.carry) == 0) {
-            creep.memory.loading = false;
-            creep.say('kop kop');
-        }
-        if (!creep.memory.loading && _.sum(creep.carry) == creep.carryCapacity) {
-            creep.memory.loading = true;
-            creep.say('zaap');
-        }
-
-        if (!creep.memory.loading) {
-            // find the nearest tombstone containing resources
-            var tombstone = creep.pos.findClosestByRange(FIND_TOMBSTONES, { filter: x => _.sum(x.store) > 0 });
-            if (tombstone) {
-                if (!creep.pos.isNearTo(tombstone)) {
-                    // try to reach tombstone
-                    creep.moveTo(tombstone);
+        switch (creep.memory.whatToDo) {
+            case 'load':
+                if (_.sum(creep.carry) == creep.carryCapacity) {
+                    common.changeState(creep, 'unload');
+                    break;
                 }
-                else {
-                    // withdraw all resource types
-                    for (var prop in tombstone.store) {
-                        creep.withdraw(tombstone, prop);
-                    }
-                }
-                return;
-            }
 
-            var container = _.find(creep.room.memory.containers, c => c.readyToTransfer);
-            if (container) {
-                container = Game.getObjectById(container.id);
-                if (!container.isEmpty) {
-                    if (!creep.pos.isNearTo(container)) {
-                        creep.moveTo(container);
+                // find the nearest tombstone containing resources
+                var tombstone = creep.pos.findClosestByRange(FIND_TOMBSTONES, { filter: x => _.sum(x.store) > 0 });
+                if (tombstone) {
+                    if (!creep.pos.isNearTo(tombstone)) {
+                        // try to reach tombstone
+                        creep.moveTo(tombstone);
                     }
                     else {
                         // withdraw all resource types
-                        for (var prop in container.store) {
-                            creep.withdraw(container, prop);
+                        for (var prop in tombstone.store) {
+                            creep.withdraw(tombstone, prop);
                         }
                     }
                     return;
                 }
-            }
 
-            common.gather(creep);
-        }
-        else {
-            let target;
-            if (_.sum(creep.carry) > creep.carry.energy) {
+                var container = _.find(creep.room.memory.containers, c => c.readyToTransfer);
+                if (container) {
+                    container = Game.getObjectById(container.id);
+                    if (!container.isEmpty) {
+                        if (!creep.pos.isNearTo(container)) {
+                            creep.moveTo(container);
+                        }
+                        else {
+                            // withdraw all resource types
+                            for (var prop in container.store) {
+                                creep.withdraw(container, prop);
+                            }
+                        }
+                        return;
+                    }
+                }
 
-                target = common.storeMinerals(creep);
-            }
-            else {
-                target = common.storeEnergy(creep);
-            }
+                if (!common.gather(creep)) {
+                    var flag = Game.flags.GatherPoint;
+                    if (flag && flag.room.name == creep.room.name) {
+                        creep.moveTo(flag, { visualizePathStyle: { stroke: '#059121', opacity: 0.8 } });
+                    }
+                }
+                break;
+            case 'unload':
+                if (_.sum(creep.carry) == 0) {
+                    common.changeState(creep, 'load');
+                    break;
+                }
 
-            if (!target) {
-                creep.say('Booriingg');
-                creep.moveTo(Game.getObjectById(creep.room.memory.spawns[0].id));
-            }
+                let target;
+                if (_.sum(creep.carry) > creep.carry.energy) {
+
+                    target = common.storeMinerals(creep);
+                }
+                else {
+                    target = common.storeEnergy(creep);
+                }
+
+                if (!target) {
+                    var flag = Game.flags.GatherPoint;
+                    if (flag && flag.room.name == creep.room.name) {
+                        creep.moveTo(flag, { visualizePathStyle: { stroke: '#059121', opacity: 0.8 } });
+                    }
+                }
+                break;
+            default:
+                creep.memory.whatToDo = 'load';
+
         }
     }
 };

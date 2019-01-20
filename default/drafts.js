@@ -10,7 +10,7 @@
 module.exports = {
     Game.spawns.SpawnGizmu.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'GLS', { memory: { role: 'speditor', sourceId: '5c3a970951bc344651daf0e6' , targetId:'5c329901cd8d3949df924bb5'} });
 
-    Game.spawns.SpawnRyjek.spawnCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'ZergQueen', { memory: { role: 'zerg', whatToDo: 'work', roomName: 'E43N29'} });
+    Game.spawns.SpawnRyjek.spawnCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'ZergQueen', { memory: { role: 'zerg', whatToDo: 'work', roomName: 'E43N29'} });
 
 
     Game.spawns.SpawnGizmu.spawnCreep([MOVE], 'Legolas');
@@ -22,52 +22,4 @@ Game.creeps.Legolas.moveTo(Game.flags.Flag1);
                 Game.creeps.Gimli.moveTo(Game.creeps.Gimli.room.controller, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
     }
-    
-    //zerg spawn!!!!
-    try {
-            var creeps = _.filter(Game.creeps, c => c.name.startsWith('Zerg'));
-            for (var i in creeps) {
-                var creep = creeps[i];
-                
-                if (creep.room.name == 'E43N29') {
-                    if (creep.name == 'ZergQueen') {
-                        var item = creep.pos.findClosestByRange(FIND_HOSTILE_STRUCTURES);
-                        
-                        if(creep.dismantle(item) == ERR_NOT_IN_RANGE) {
-                            creep.say("omnoomnomm");
-                            creep.moveTo(item, {visualizePathStyle: {stroke: '#ffaa00'}});
-                        }
-                        continue;
-                    }
-                    
-                    if(creep.memory.building && creep.carry.energy == 0) {
-                        creep.memory.building = false;
-                        creep.say('â kop kop');
-            	    }
-            	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-            	        creep.memory.building = true;
-            	        creep.say('ð§ build');
-            	    }
-                    
-                    if (!creep.memory.building) {
-                        var source = Game.getObjectById('5bbcaf829099fc012e63ab01');
-                        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
-                        }
-                    }
-                    else {
-                        var source = Game.getObjectById('5c2d23bfa310e97ef303e748');
-                        if (creep.build(source) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
-                        }
-                    }
-                    /*if(creep.claimController(Game.creeps.Gimli.room.controller) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(Game.creeps.Gimli.room.controller, {visualizePathStyle: {stroke: '#ffaa00'}});
-                    }*/
-                }
-                else {
-                    creep.moveTo(Game.getObjectById('5c2d23bfa310e97ef303e748'));
-                }
-            }
-        } catch (e) {console.log(e);}
-};
+}

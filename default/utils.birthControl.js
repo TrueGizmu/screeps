@@ -43,16 +43,19 @@ module.exports = {
         }
 
         if (room.energyAvailable >= 750) {
+            //---------MINERS-------------------
             if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
                 spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], { memory: { role: 'miner', roomName: room.name } });
                 return;
             }
 
+            //---------HARVESTERS-------------------
             if (harvesters.length < 3) {
                 spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
                 return;
             }
 
+            //---------UPGRADERS-------------------
             if (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3)) {
                 if (!room.storage || (room.storage && room.storage.store[RESOURCE_ENERGY] >= 100000) || upgraders.length < 2) {
                     var body = [];
@@ -62,17 +65,20 @@ module.exports = {
                     else {
                         body = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
                     }
-                    spawn.spawnCreep(body, { memory: { role: 'upgrader', roomName: room.name } });
-                    return;
+                    if (room.name != 'E43N29' || (room.name == 'E43N29' && upgraders.length == 0)) {
+                        spawn.spawnCreep(body, { memory: { role: 'upgrader', roomName: room.name } });
+                        return;
+                    }
                 }
             }
 
+            //---------BUILDERS-------------------
             if (constructionSites.length > 0 && builders.length < 2) {
                 spawn.spawnCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], { memory: { role: 'builder', roomName: room.name } });
                 return;
             }
 
-            //zergzz
+            //---------ZERGZZ-------------------
             if (warFlag && warFlag.memory.originRoomName == room.name) {
                 if (zergClaimer.length == 0 && (!warFlag.room || !warFlag.room.controller.my)) {
                     spawn.spawnCreep([CLAIM, MOVE, MOVE, MOVE], 'ZergClaimer', { memory: { role: 'zerg', roomName: warFlag.pos.roomName } });
@@ -90,8 +96,15 @@ module.exports = {
                 return;
             }
         }
-        else if (spawn.room.energyAvailable >= 300 && harvesters.length < 2) {
-            spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
+        else if (spawn.room.energyAvailable >= 300) {
+            if (harvesters.length < 1) {
+                spawn.spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], { memory: { role: 'harvester', roomName: room.name } });
+                return
+            }
+
+            if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
+                spawn.spawnCreep([WORK, WORK, MOVE, MOVE], { memory: { role: 'miner', roomName: room.name } });
+            }
         }
     }
 };
