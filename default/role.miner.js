@@ -14,7 +14,6 @@ module.exports = {
     run: function(creep) {
 
         if (!creep.memory.containerId || !creep.memory.sourceId) {
-            var roomName = creep.room.name;
             var containers = creep.room.memory.containers;
 
             var target = _.find(containers, s => s.isActive && _.every(Game.creeps, c=>c.memory.containerId != s.id));
@@ -35,9 +34,9 @@ module.exports = {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
                     return;
                 }
-                
-                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.say('Whaaattt??');
+
+                if (!container.isFull) {
+                    creep.harvest(source);
                 }
                 
                 if (container.memory && container.memory.type == LOOK_MINERALS) {

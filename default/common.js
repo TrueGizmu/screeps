@@ -92,6 +92,8 @@ module.exports = {
                 creep.moveTo(source, { visualizePathStyle: { stroke: '#f4ee42' } });
             }
         }
+
+        return source;
     },
 
     storeEnergy(creep) {
