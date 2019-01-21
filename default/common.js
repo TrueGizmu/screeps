@@ -171,7 +171,7 @@ module.exports = {
     },
 
     linksTransfer(room) {
-        var allInLinks = room.getLinks('IN');
+        var allInLinks = room.getLinks('IN').concat(room.getLinks('MINER'));
         var allOutLinks = room.getLinks('OUT');
 
         for (var i in allInLinks) {

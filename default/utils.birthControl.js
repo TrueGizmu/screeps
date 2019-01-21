@@ -42,13 +42,13 @@ module.exports = {
                 '\tMiners:', miners.length, '\tZergs:', zergs.length);
         }
 
-        if (room.energyAvailable >= 750) {
+        if (room.energyAvailable >= 800) {
             //---------MINERS-------------------
             if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
                 var body = [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE];
                 var minerNeeded = _.find(room.memory.miners, m => !m.name);
                 if (minerNeeded) {
-                    if (minerNeened.linkId) {
+                    if (minerNeeded.linkId) {
                         body = [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE];
                     }
                     var creepName = spawn.getNewName('miner');

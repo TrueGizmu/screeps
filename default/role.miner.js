@@ -23,7 +23,7 @@ module.exports = {
                 var containers = creep.room.memory.containers;
                 var miners = creep.room.memory.miners;
 
-                var target = _.find(miners, m => m.name);
+                var target = _.find(miners, m => m.name == creep.name);
                 if (target) {
                     target.name = creep.name;
                     creep.memory.containerId = target.containerId;
@@ -41,7 +41,7 @@ module.exports = {
                 else {
                     var target = _.find(containers, s => s.isActive && _.every(Game.creeps, c => c.memory.containerId != s.id));
                     if (target) {
-                        creep.memory.containerId = target.containerId;
+                        creep.memory.containerId = target.id;
                         creep.memory.sourceId = target.sourceId;
                         common.changeState(creep, 'work');
                     }
@@ -61,16 +61,17 @@ module.exports = {
                 var link = Game.getObjectById(creep.memory.linkId);
 
                 if (container.isFull && (!link || link.IsFull)) {
+                    console.log('Miner: Everything is full');
                     break;
+                }
+
+                if (!creep.pos.isEqualTo(container)) {
+                    creep.moveTo(container, { visualizePathStyle: { stroke: '#ffaa00' } });
+                    return;
                 }
 
                 var miner = _.find(creep.room.memory.miners, m => m.name == creep.name);
                 if (miner) {
-                    if (!creep.pos.isEqualTo(container)) {
-                        creep.moveTo(container, { visualizePathStyle: { stroke: '#ffaa00' } });
-                        return;
-                    }
-
                     if (creep.harvest(source) != OK) {
                         break;
                     }
