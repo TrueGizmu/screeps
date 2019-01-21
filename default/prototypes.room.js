@@ -73,13 +73,15 @@ Room.prototype.mapContainers = function () {
         if (!_.some(this.memory.containers, t => t.id == id)) {
 
             var sourceType = LOOK_ENERGY;
+            var strategy = 'fiftyFifty';
             var source = _.find(roomContainers[i].pos.findInRange(FIND_SOURCES, 1));
             if (!source) {
                 source = _.find(roomContainers[i].pos.findInRange(FIND_MINERALS, 1));
                 sourceType = LOOK_MINERALS;
+                strategy = 'containerFirst';
             }
 
-            this.memory.miners.push({ sourceType: sourceType, sourceId: source.id, containerId: id, strategy: 'fiftyFifty' });
+            this.memory.miners.push({ sourceType: sourceType, sourceId: source.id, containerId: id, strategy: strategy });
             this.memory.containers.push({ id: id, sourceId: source.id, type: sourceType, isActive: true });
             console.log('Room mapping', this.name, '- added new container', id, sourceType);
         }

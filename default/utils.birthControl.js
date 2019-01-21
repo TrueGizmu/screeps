@@ -38,14 +38,26 @@ module.exports = {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
 
         if (Game.time % 50 == 0) {
-            console.log('Room:', room.memory.alias, ' Harvesters: ', harvesters.length, ' Upgraders: ', upgraders.length, ' Builders: ', builders.length,
-                ' Miners:', miners.length, ' Zergs:', zergs.length);
+            console.log('Room:', room.memory.alias, '\tHarvesters:', harvesters.length, '\tUpgraders:', upgraders.length, '\tBuilders:', builders.length,
+                '\tMiners:', miners.length, '\tZergs:', zergs.length);
         }
 
         if (room.energyAvailable >= 750) {
             //---------MINERS-------------------
             if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
-                spawn.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], { memory: { role: 'miner', roomName: room.name } });
+                var body = [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE];
+                var minerNeeded = _.find(room.memory.miners, m => !m.name);
+                if (minerNeeded) {
+                    if (minerNeened.linkId) {
+                        body = [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE];
+                    }
+                    var creepName = spawn.getNewName('miner');
+                    minerNeeded.name = creepName;
+                    spawn.spawnCreep(body, creepName, { memory: { role: 'miner', roomName: room.name } });
+                    return;
+                }
+
+                spawn.spawnCreep(body, { memory: { role: 'miner', roomName: room.name } });
                 return;
             }
 
@@ -65,10 +77,8 @@ module.exports = {
                     else {
                         body = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
                     }
-                    if (room.name != 'E43N29' || (room.name == 'E43N29' && upgraders.length == 0)) {
-                        spawn.spawnCreep(body, { memory: { role: 'upgrader', roomName: room.name } });
-                        return;
-                    }
+                    spawn.spawnCreep(body, { memory: { role: 'upgrader', roomName: room.name } });
+                    return;
                 }
             }
 
