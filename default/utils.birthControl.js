@@ -45,6 +45,7 @@ module.exports = {
         if (room.energyAvailable >= 800) {
             //---------MINERS-------------------
             if (miners.length < _.filter(room.memory.containers, c => c.isActive).length) {
+                common.clearMinersMemory();
                 var body = [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE];
                 var minerNeeded = _.find(room.memory.miners, m => !m.name);
                 if (minerNeeded) {

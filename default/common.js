@@ -49,6 +49,25 @@ module.exports = {
         }
     },
 
+    clearMinersMemory() {
+        var minersInMemory = _.filter(Memory.creeps, c => c.role == 'Miner');
+        if (minersInMemory.length > 0) {
+            for (var i in minersInMemory) {
+                var creepName = minersInMemory[i];
+                if (!Game.creeps[creepName]) {
+                    var miner = _.find(Memory.rooms[creepName.roomName].miners, m => m.name == creepName);
+                    if (miner) {
+                        console.log('Clearing miner name for:', creepName);
+                        miner.name = null;
+                    }
+
+                    delete Memory.creeps[creepName];
+                    console.log('Clearing non-existing miner memory:', creepName);
+                }
+            }
+        }
+    },
+
     gather(creep, position) {
         if (!position) {
             position = creep.pos;

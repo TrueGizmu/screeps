@@ -52,7 +52,7 @@ module.exports = {
                 }
                 break;
             case 'work':
-                if (creep.ticktToLive < 2) {
+                if (creep.ticksToLive < 3) {
                     common.changeState(creep, 'unassign');
                 }
 
