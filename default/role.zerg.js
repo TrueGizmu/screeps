@@ -94,6 +94,7 @@ module.exports = {
                 else if (claimResult == OK) {
                     creep.signController(creep.room.controller, "Gizmu's dominion!");
                     console.log(`Room ${creep.room.name} claimed, creep can die now`);
+                    creep.room.mapInMemory();
                     creep.suicide();
                 }
                 break;

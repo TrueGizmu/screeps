@@ -7,6 +7,8 @@
  * mod.thing == 'a thing'; // true
  */
 
+var common = require("common");
+
 Room.prototype.createStructure = function () {
     if (!this.memory.towers) {
         this.memory.towers = [];
