@@ -72,7 +72,26 @@ module.exports = {
 
                 var miner = _.find(creep.room.memory.miners, m => m.name == creep.name);
                 if (miner) {
-                    if (creep.harvest(source) != OK) {
+                    var harvestResult = creep.harvest(source);
+                    if (harvestResult == ERR_NOT_ENOUGH_RESOURCES) {
+                        if (container.memory && container.memory.type == LOOK_MINERALS) {
+                            var containerStoreAmount = _.sum(container.store);
+    
+                            if (containerStoreAmount <= 500) {
+                                container.memory.readyToTransfer = false;
+                            }
+                            else if (containerStoreAmount >= 1500) {
+                                container.memory.readyToTransfer = true;
+                            }
+    
+                            if (container.isFull || source.ticksToRegeneration) {
+                                container.memory.isActive = false;
+                                common.changeState(creep, 'unassign');
+                            }
+                        }
+                        break;
+                    }
+                    else if (harvestResult != OK) {
                         break;
                     }
 
