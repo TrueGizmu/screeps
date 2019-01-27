@@ -26,12 +26,17 @@ Room.prototype.createStructure = function () {
         this.memory.links = [];
     }
 
-    if (!this.memory.labs) {
-        this.memory.labs = [];
-    }
-
     if (!this.memory.miners) {
         this.memory.miners = [];
+    }
+
+    //CHEMISTRY
+    if (!this.memory.chemistry) {
+        this.memory.chemistry = {};
+        this.memory.chemistry.labs = [];
+        this.memory.chemistry.reactions = [];
+        this.memory.chemistry.labPoints = [];
+        this.memory.chemistry.sourceLabIds = [];
     }
 };
 
@@ -125,16 +130,18 @@ Room.prototype.mapLinks = function () {
 };
 
 Room.prototype.mapLabs = function () {
-    var items = _.filter(this.find(FIND_MY_STRUCTURES), f => f.structureType == STRUCTURE_LAB);
+    var labs = this.find(FIND_MY_STRUCTURES, { filter: str => str.structureType == STRUCTURE_LAB });
+    if (!labs) return;
 
-    if (!items) return;
-
-    for (var i in items) {
-        var id = items[i].id;
-        if (!_.some(this.memory.labs, t => t.id == id)) {
-
-            this.memory.labs.push({ id: id });
-            console.log('Room mapping', this.name, '- added new lab', id);
+    for (var i in labs) {
+        var id = labs[i].id;
+        if (!_.some(this.memory.chemistry.labs, x => x.id == id)) {
+            this.memory.chemistry.labs.push({
+                id: id,
+                mineralType: null,
+                isBoosting: false
+            });
+            console.log('Room mapping', this.memory.alias, '- added new lab', id);
         }
     }
 };

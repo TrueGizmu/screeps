@@ -5,11 +5,13 @@ var roleMiner = require('role.miner');
 var roleZerg = require("role.zerg");
 var roleClicker = require("role.clicker");
 var roleSpeditor = require('role.speditor');
+var roleScientist = require('role.scientist');
 
 var defences = require('defences');
 var common = require("common");
 var prototypes = require("prototypes");
 var transport = require('transport');
+var labs = require('labs');
 var utilsStats = require('utils.stats');
 var utilsBirthControl = require('utils.birthControl');
 
@@ -34,6 +36,10 @@ module.exports.loop = function () {
         defences.run(currentRoom);
 
         utilsBirthControl.spawn(currentRoom);
+
+        if (Game.time % 5 == 0) {
+            labs.runReactions(currentRoom);
+        }
 
         if (Game.time % 10 == 0) {
             common.linksTransfer(currentRoom);
@@ -66,6 +72,9 @@ module.exports.loop = function () {
             }
             if (creep.memory.role == 'speditor') {
                 roleSpeditor.run(creep);
+            }
+            if (creep.memory.role == 'scientist') {
+                roleScientist.run(creep);
             }
         } catch (error) {
             console.log(error.stack);

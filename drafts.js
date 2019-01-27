@@ -15,6 +15,7 @@ module.exports = {
     Game.spawns.SpawnRyjek.spawnCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'ZergQueen', { memory: { role: 'zerg', whatToDo: 'work', roomName: 'E43N29'} });
     //transporttt
     var transport = require('transport'); transport.createTransportTask('sourceId','targetId','*',resourceAmount,carryCount,isOptimizedBody, taskId);
+    var labs = require('labs'); labs.produce('E42N29', 'OH');
 
 Game.rooms.E42N29.terminal.send('H', 80000, 'E43N29', 'Bleee');
 
