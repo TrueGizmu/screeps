@@ -40,7 +40,7 @@ function _work(creep) {
 
         var target = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
         if (target) {
-            creep.say("Buduj raz");
+            creep.say("😀");
             if (creep.build(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, { visualizePathStyle: { stroke: '#317ef9', opacity: 0.8 } });
             }

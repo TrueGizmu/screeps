@@ -9,6 +9,7 @@ var roleSpeditor = require('role.speditor');
 var defences = require('defences');
 var common = require("common");
 var prototypes = require("prototypes");
+var transport = require('transport');
 var utilsStats = require('utils.stats');
 var utilsBirthControl = require('utils.birthControl');
 
@@ -73,6 +74,7 @@ module.exports.loop = function () {
 
     if (Game.time % 10 == 0) {
         common.clearMemory();
+        transport.run();
     }
 
     try {
