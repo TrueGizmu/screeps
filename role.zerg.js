@@ -34,10 +34,6 @@ function _work(creep) {
         }
     }
     else {
-        if (common.storeEnergy(creep)) {
-            return;
-        }
-
         var target = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
         if (target) {
             creep.say("😀");
@@ -49,6 +45,10 @@ function _work(creep) {
 
         if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
+        }
+
+        if (common.storeEnergy(creep)) {
+            return;
         }
     }
 }

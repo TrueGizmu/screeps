@@ -7,8 +7,11 @@ module.exports = {
 
     Game.spawns.SpawnRyjek.spawnCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'ZergQueen', { memory: { role: 'zerg', whatToDo: 'work', roomName: 'E43N29'} });
     
-    Game.spawns.Zergs.spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,HEAL,HEAL,HEAL,HEAL], 'Napieraj!', { memory: { role: 'destroyer'} });
+    Game.spawns.Zergs.spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL], 'Lolek2', { memory: { role: 'destroyer'} });
     
+    Game.spawns.SpawnGizmu.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'Robin_Hood', { memory: { role: 'looter'} });
+    
+
     Game.spawns.SpawnGizmu.spawnCreep([MOVE], 'Legolas');
     //transporttt
     var transport = require('transport'); transport.createTransportTask('sourceId','targetId','*',resourceAmount,carryCount,isOptimizedBody, taskId);
