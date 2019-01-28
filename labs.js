@@ -109,7 +109,7 @@ module.exports = {
             return;
         }
         
-        var sourceLabIds = room.memory.chemistry.sourceLabIds;
+        var sourceLabIds = _.filter(room.memory.chemistry.labs, x => x.isSource).map(x => x.id);
         
         if (sourceLabIds.length != 2) {
             console.log('ERROR: Exactly two source lab ids are required', roomAlias);

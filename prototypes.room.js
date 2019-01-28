@@ -36,7 +36,6 @@ Room.prototype.createStructure = function () {
         this.memory.chemistry.labs = [];
         this.memory.chemistry.reactions = [];
         this.memory.chemistry.labPoints = [];
-        this.memory.chemistry.sourceLabIds = [];
     }
 };
 
@@ -139,7 +138,8 @@ Room.prototype.mapLabs = function () {
             this.memory.chemistry.labs.push({
                 id: id,
                 mineralType: null,
-                isBoosting: false
+                isBoosting: false,
+                isSourceLab: false
             });
             console.log('Room mapping', this.memory.alias, '- added new lab', id);
         }
@@ -180,14 +180,14 @@ Room.prototype.getContainers = function () {
     return _.filter(this.memory.containers.map(c => Game.getObjectById(c.id)), x => x);
 };
 
+Room.prototype.getLabs = function () {
+    return _.filter(this.memory.chemistry.labs.map(c => Game.getObjectById(c.id)), x => x);
+};
+
 Room.prototype.getLinks = function (direction) {
     var links = this.memory.links;
     if (direction) {
         links = _.filter(links, c => c.direction == direction);
     }
     return links.map(l => Game.getObjectById(l.id));
-};
-
-module.exports = {
-
 };

@@ -149,6 +149,11 @@ module.exports = {
         }
 
         if (!target) {
+            var labs = creep.room.getLabs();
+            target = creep.pos.findClosestByRange(_.filter(labs, t => t.energy < 2000));
+        }
+
+        if (!target) {
             if (creep.room.terminal && creep.room.terminal.store[RESOURCE_ENERGY] < 100000 && _.sum(creep.room.terminal.store) != creep.room.terminal.storeCapacity) {
                 target = creep.room.terminal;
             }
