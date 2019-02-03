@@ -11,9 +11,18 @@ module.exports = {
     
     Game.spawns.SpawnGizmu.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY], 'Robin_Hood', { memory: { role: 'looter'} });
     
+    
+
+    Game.spawns.Zergs.spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK], 'Wall_eater', { memory: { role: 'destroyer'} });
+    
 
     Game.spawns.SpawnGizmu.spawnCreep([MOVE], 'Legolas');
     //transporttt
-    var transport = require('transport'); transport.createTransportTask('sourceId','targetId','*',resourceAmount,carryCount,isOptimizedBody, taskId);
+    var transport = require('transport'); transport.createTransportTask('sourceId','targetId','*',resourceAmount,carryCount,isOptimizedBody);
     var labs = require('labs'); labs.produce('E42N29', 'OH');
+
+    //market
+    Game.market.calcTransactionCost(30000, 'E45N28', 'E40S60');
+    Game.market.deal('5c55fefbca90350b7861c0e7', 21000, 'E45N28')
+
 }

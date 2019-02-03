@@ -34,6 +34,14 @@ module.exports = {
                     }
                     return;
                 }
+                
+                /*var target2 = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
+                if(target2) {
+                    if(creep.pickup(target2) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target2);
+                    }
+                    return;
+                }*/
 
                 var container = _.find(creep.room.memory.containers, c => c.readyToTransfer);
                 if (container) {

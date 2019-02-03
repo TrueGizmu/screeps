@@ -19,7 +19,7 @@ function _work(creep) {
     }
 
     if (creep.memory.mining) {
-        var hostileStruct = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, { filter: f => f.energy });
+        var hostileStruct = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, { filter: f => f.energy || (f.store && f.store.energy) });
 
         if (hostileStruct) {
             if (creep.withdraw(hostileStruct, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -45,6 +45,7 @@ function _work(creep) {
 
         if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
+            return;
         }
 
         if (common.storeEnergy(creep)) {
@@ -101,7 +102,7 @@ module.exports = {
             case 'dismantleHostileSpawn':
                 var spawnToDismantle = creep.pos.findClosestByRange(FIND_HOSTILE_SPAWNS);
                 if (!spawnToDismantle) {
-                    common.changeState(creep, 'buildSpawnConstructionSite', true);
+                    common.changeState(creep, 'clearSpawnLocation', true);
                     break;
                 }
 
@@ -114,6 +115,19 @@ module.exports = {
                 if (creep.dismantle(spawnToDismantle) != OK) {
                     creep.say("seek & destroy");
                     creep.moveTo(spawnToDismantle, { visualizePathStyle: { stroke: '#ffaa00' } });
+                }
+                break;
+            case 'clearSpawnLocation':
+                var warFlag = Game.flags['Warflag'];
+                var target = _.find(warFlag.pos.lookFor(LOOK_STRUCTURES), x => !x.my);
+                if (!target) {
+                    common.changeState(creep, 'buildSpawnConstructionSite', true);
+                    break;
+                }
+
+                if (creep.dismantle(target) != OK) {
+                    creep.say("seek & destroy");
+                    creep.moveTo(target, { visualizePathStyle: { stroke: '#ff0000', opacity: 0.8 } });
                 }
                 break;
             case 'buildSpawnConstructionSite':
@@ -130,7 +144,7 @@ module.exports = {
                 _work(creep);
                 break;
             case 'dismantleHostileStructures':
-                var itemToDismantle = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+                var itemToDismantle = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: x => !x.energy && (!x.store || _.sum(x.store) == 0)});
                 if (!itemToDismantle) {
                     common.changeState(creep, 'work', true);
                     break;

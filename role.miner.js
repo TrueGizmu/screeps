@@ -61,7 +61,7 @@ module.exports = {
                 var link = Game.getObjectById(creep.memory.linkId);
 
                 if (container.isFull && (!link || link.IsFull)) {
-                    console.log('Miner: Everything is full');
+                    console.log(`Miner ${creep.name}: Everything is full`);
                     break;
                 }
 
