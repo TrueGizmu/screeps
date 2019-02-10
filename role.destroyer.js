@@ -79,6 +79,7 @@ module.exports = {
 
                 if (!dismantleField) {
                     common.changeState(creep,'signController', true);
+                    //common.changeState(creep,'moveToEngage', true);
                     break;
                 }
 

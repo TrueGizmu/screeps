@@ -43,12 +43,12 @@ function _work(creep) {
             return;
         }
 
-        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
+        if (common.storeEnergy(creep)) {
             return;
         }
 
-        if (common.storeEnergy(creep)) {
+        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
             return;
         }
     }
