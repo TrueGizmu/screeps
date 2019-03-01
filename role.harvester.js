@@ -46,7 +46,7 @@ module.exports = {
                 var container = _.find(creep.room.memory.containers, c => c.readyToTransfer);
                 if (container) {
                     container = Game.getObjectById(container.id);
-                    if (!container.isEmpty) {
+                    if (container && !container.isEmpty) {
                         if (!creep.pos.isNearTo(container)) {
                             creep.moveTo(container);
                         }

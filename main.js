@@ -32,6 +32,7 @@ module.exports.loop = function () {
             }
             catch (e) {
                 console.log(e.stack);
+                Game.notify(e.stack, 60);
             }
         }
 
@@ -86,6 +87,7 @@ module.exports.loop = function () {
             }
         } catch (error) {
             console.log(error.stack);
+            Game.notify(error.stack, 60);
         }
     }
 

@@ -72,7 +72,11 @@ Room.prototype.mapSpawns = function () {
 Room.prototype.mapContainers = function () {
     var roomContainers = _.filter(this.find(FIND_STRUCTURES), f => f.structureType == STRUCTURE_CONTAINER);
 
-    if (!roomContainers) return;
+    if (!roomContainers) 
+    {
+        this.memory.containers = null;
+        return;
+    }
 
     for (var i in roomContainers) {
         var id = roomContainers[i].id;
@@ -139,7 +143,7 @@ Room.prototype.mapLabs = function () {
                 id: id,
                 mineralType: null,
                 isBoosting: false,
-                isSourceLab: false
+                isSource: false
             });
             console.log('Room mapping', this.memory.alias, '- added new lab', id);
         }

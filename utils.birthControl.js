@@ -69,7 +69,7 @@ module.exports = {
             }
 
             //---------UPGRADERS-------------------
-            if (upgraders.length == 0 || (constructionSites.length == 0 && upgraders.length < 3)) {
+            if (upgraders.length == 0 || (constructionSites.length == 0 && room.controller.level < 8 &&  upgraders.length < 3)) {
                 if (!room.storage || (room.storage && room.storage.store[RESOURCE_ENERGY] >= 100000) || upgraders.length < 2) {
                     var body = [];
                     if (_.some(room.memory.links)) {

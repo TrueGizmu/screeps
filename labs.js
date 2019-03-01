@@ -94,7 +94,7 @@ module.exports = {
         
         var room = Game.rooms[roomName];
         if (!room) {
-            console.log('ERROR: could not find room', roomAlias);
+            console.log('ERROR: could not find room', roomName);
             return;
         }
         
@@ -105,14 +105,14 @@ module.exports = {
         
         var room = Game.rooms[roomName];
         if (!room) {
-            console.log('ERROR: could not find room', roomAlias);
+            console.log('ERROR: could not find room', roomName);
             return;
         }
         
         var sourceLabIds = _.filter(room.memory.chemistry.labs, x => x.isSource).map(x => x.id);
         
         if (sourceLabIds.length != 2) {
-            console.log('ERROR: Exactly two source lab ids are required', roomAlias);
+            console.log('ERROR: Exactly two source lab ids are required', roomName);
             return;
         }
                 
