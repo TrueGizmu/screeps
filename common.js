@@ -165,6 +165,11 @@ module.exports = {
             }
         }
 
+        if (!target) {
+            var towers = creep.room.getTowers();
+            target = creep.pos.findClosestByRange(_.filter(towers, t => t.energy < t.energyCapacity));
+        }
+
         if (target) {
             if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, { visualizePathStyle: { stroke: '#41ebf4' } });

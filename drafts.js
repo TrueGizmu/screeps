@@ -23,7 +23,8 @@ module.exports = {
 
     //market
     Game.market.calcTransactionCost(30000, 'E45N28', 'E40S60');
-    Game.market.deal('5c79800d8e7ccb577416187c', 21000, 'E45N28');
+    Game.market.deal('5c7ba35090e9444977415b88', 21000, 'E45N28');
     Game.market.createOrder(ORDER_SELL, 'K', 0.095, 30000, 'E42N31');
+    Game.market.extendOrder(orderId, addAmount);
 
 }

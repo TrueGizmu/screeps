@@ -181,6 +181,8 @@ Room.prototype.getSpawns = function () {
 };
 
 Room.prototype.getContainers = function () {
+    if (!this.memory.containers) 
+        return null;
     return _.filter(this.memory.containers.map(c => Game.getObjectById(c.id)), x => x);
 };
 
@@ -195,3 +197,11 @@ Room.prototype.getLinks = function (direction) {
     }
     return links.map(l => Game.getObjectById(l.id));
 };
+
+Object.defineProperty(Room.prototype, 'canStoreMinerals', {
+    get: function () {
+        return ((this.storage && this.storage.storeCapacity > _.sum(this.storage.store)) || (this.terminal && this.terminal.storeCapacity > _.sum(this.terminal.store)))
+    },
+    enumerable: false,
+    configurable: true
+});

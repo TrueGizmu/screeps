@@ -19,20 +19,22 @@ module.exports = {
                     break;
                 }
 
-                // find the nearest tombstone containing resources
-                var tombstone = creep.pos.findClosestByRange(FIND_TOMBSTONES, { filter: x => _.sum(x.store) > 0 });
-                if (tombstone) {
-                    if (!creep.pos.isNearTo(tombstone)) {
-                        // try to reach tombstone
-                        creep.moveTo(tombstone);
-                    }
-                    else {
-                        // withdraw all resource types
-                        for (var prop in tombstone.store) {
-                            creep.withdraw(tombstone, prop);
+                // find the nearest tombstone containing resources only when there is place for it
+                if (creep.room.canStoreMinerals) {
+                    var tombstone = creep.pos.findClosestByRange(FIND_TOMBSTONES, { filter: x => _.sum(x.store) > 0 });
+                    if (tombstone) {
+                        if (!creep.pos.isNearTo(tombstone)) {
+                            // try to reach tombstone
+                            creep.moveTo(tombstone);
                         }
+                        else {
+                            // withdraw all resource types
+                            for (var prop in tombstone.store) {
+                                creep.withdraw(tombstone, prop);
+                            }
+                        }
+                        return;
                     }
-                    return;
                 }
                 
                 /*var target2 = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
@@ -44,7 +46,7 @@ module.exports = {
                 }*/
 
                 var container = _.find(creep.room.memory.containers, c => c.readyToTransfer);
-                if (container) {
+                if (container && (container.type == LOOK_ENERGY || creep.room.canStoreMinerals)) {
                     container = Game.getObjectById(container.id);
                     if (container && !container.isEmpty) {
                         if (!creep.pos.isNearTo(container)) {
